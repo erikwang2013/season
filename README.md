@@ -1,4 +1,4 @@
-# webman-season
+# season
 
 根据 **ISO 3166-1 alpha-2** 国家简码获取当前季节的 PHP 扩展，可作为普通 Composer 库使用，并可选集成 **Laravel 7–11**、**ThinkPHP 6 / 8**、**Hyperf 2 / 3** 与 **webman** 插件。除英文季节键名（`spring` 等）与中文名称外，还提供 **国旗 Emoji**、按 **BCP 47** 语言区域返回的 **多语言季节名称**，以及半球判断、指定日期计算等。
 
@@ -8,7 +8,7 @@
 ## 安装
 
 ```bash
-composer require erikwang2013/webman-season
+composer require erikwang2013/season
 ```
 
 ## 在 webman 中安装插件
@@ -16,10 +16,10 @@ composer require erikwang2013/webman-season
 安装完依赖后，在 webman 项目根目录执行（需已安装 webman/console）：
 
 ```bash
-php webman install erikwang2013/webman-season
+php webman install erikwang2013/season
 ```
 
-或手动将 `vendor/erikwang2013/webman-season/src/config/plugin/erikwang2013/webman-season` 复制到项目的 `config/plugin/erikwang2013/webman-season`。
+或手动将 `vendor/erikwang2013/season/src/config/plugin/erikwang2013/season` 复制到项目的 `config/plugin/erikwang2013/season`。
 
 ## Laravel 7–11
 
@@ -44,7 +44,7 @@ php artisan vendor:publish --tag=country-season-config
 可选：发布配置文件到项目：
 
 ```bash
-php bin/hyperf.php vendor:publish erikwang2013/webman-season
+php bin/hyperf.php vendor:publish erikwang2013/season
 ```
 
 生成 `config/autoload/country_season.php` 后按需修改；未发布时仍使用内置默认值 **`CN`**（可通过环境变量 **`COUNTRY_SEASON_DEFAULT`** 等在自定义配置中覆盖）。
@@ -132,7 +132,7 @@ use CountrySeason\SeasonService;
 use support\Container;
 
 Container::singleton(SeasonService::class, function () {
-    $code = config('plugin.erikwang2013.webman-season.app.default_country_code', 'CN');
+    $code = config('plugin.erikwang2013.season.app.default_country_code', 'CN');
 
     return new SeasonService(\is_string($code) ? $code : 'CN');
 });
@@ -155,7 +155,7 @@ $seasonService->getHemisphere('NZ');
 
 ### 5. 配置（webman）
 
-配置文件：`config/plugin/erikwang2013/webman-season/app.php`
+配置文件：`config/plugin/erikwang2013/season/app.php`
 
 ```php
 return [

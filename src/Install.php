@@ -13,7 +13,7 @@ class Install
 
     /** @var array 安装时复制/链接的路径对应 */
     protected static array $pathRelation = [
-        'config/plugin/erikwang2013/webman-season' => 'config/plugin/erikwang2013/webman-season',
+        'config/plugin/erikwang2013/season' => 'config/plugin/erikwang2013/season',
     ];
 
     public static function install(): void

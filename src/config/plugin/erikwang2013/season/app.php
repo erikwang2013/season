@@ -1,8 +1,8 @@
 <?php
 
 /**
- * webman-season 插件配置
- * 配置复制到 config/plugin/erikwang2013/webman-season/ 后会被 webman 自动加载
+ * season 插件配置
+ * 配置复制到 config/plugin/erikwang2013/season/ 后会被 webman 自动加载
  */
 return [
     'enable' => true,
