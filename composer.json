@@ -1,0 +1,40 @@
+{
+    "name": "erikwang2013/webman-season",
+    "description": "根据 ISO 3166-1 国家简码获取当前季节，支持 webman 框架",
+    "type": "library",
+    "license": "MIT",
+    "keywords": ["iso 3166-1", "country", "season", "webman", "php"],
+    "authors": [
+        {
+            "name": "erik",
+            "email": "erik@erik.xyz"
+        }
+    ],
+    "require": {
+        "php": ">=8.0",
+        "ext-mbstring": "*"
+    },
+    "suggest": {
+        "workerman/webman-framework": "用于在 webman 项目中作为插件使用"
+    },
+    "autoload": {
+        "psr-4": {
+            "CountrySeason\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CountrySeason\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
