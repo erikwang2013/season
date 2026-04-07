@@ -1,6 +1,6 @@
 # webman-season
 
-根据 **ISO 3166-1 alpha-2** 国家简码获取当前季节的 PHP 扩展，支持在 **webman** 中作为插件使用。除英文季节键名（`spring` 等）与中文名称外，还提供 **国旗 Emoji**、按 **BCP 47** 语言区域返回的 **多语言季节名称**，以及半球判断、指定日期计算等。
+根据 **ISO 3166-1 alpha-2** 国家简码获取当前季节的 PHP 扩展，可作为普通 Composer 库使用，并可选集成 **Laravel 7–11**、**ThinkPHP 6 / 8**、**Hyperf 2 / 3** 与 **webman** 插件。除英文季节键名（`spring` 等）与中文名称外，还提供 **国旗 Emoji**、按 **BCP 47** 语言区域返回的 **多语言季节名称**，以及半球判断、指定日期计算等。
 
 - 北半球：春 3–5，夏 6–8，秋 9–11，冬 12/1/2  
 - 南半球：秋 3–5，冬 6–8，春 9–11，夏 12/1/2  
@@ -20,6 +20,34 @@ php webman install erikwang2013/webman-season
 ```
 
 或手动将 `vendor/erikwang2013/webman-season/src/config/plugin/erikwang2013/webman-season` 复制到项目的 `config/plugin/erikwang2013/webman-season`。
+
+## Laravel 7–11
+
+`composer require` 后，若未在 `composer.json` 中关闭该包的 **package discovery**，会自动注册 `CountrySeason\Laravel\CountrySeasonServiceProvider`，并向容器注册 **`SeasonService`**（默认国家码来自合并后的配置）。
+
+可选：将默认配置发布到应用，便于修改：
+
+```bash
+php artisan vendor:publish --tag=country-season-config
+```
+
+发布后得到 `config/country_season.php`，其中 `default_country_code` 对应环境变量 **`COUNTRY_SEASON_DEFAULT`**（默认 `CN`）。在控制器或服务中注入 `CountrySeason\SeasonService` 即可。
+
+## ThinkPHP 6 / 8
+
+安装后由 Composer 的 **think 扩展机制** 自动发现 `CountrySeason\ThinkPHP\Service`，注册 **`SeasonService`** 并合并包内 `config/country_season.php` 到配置项 **`country_season`**。在需要处通过容器解析 `CountrySeason\SeasonService` 或依赖注入使用。
+
+## Hyperf 2 / 3
+
+安装后由 **Hyperf ConfigProvider** 机制合并依赖：向容器绑定 **`SeasonService`**，并从配置 **`country_season.default_country_code`** 读取默认国家码。
+
+可选：发布配置文件到项目：
+
+```bash
+php bin/hyperf.php vendor:publish erikwang2013/webman-season
+```
+
+生成 `config/autoload/country_season.php` 后按需修改；未发布时仍使用内置默认值 **`CN`**（可通过环境变量 **`COUNTRY_SEASON_DEFAULT`** 等在自定义配置中覆盖）。
 
 ## 使用方式
 
@@ -91,9 +119,24 @@ country_season_locale('IT', 'it_IT');  // 意大利语季节名，如 Primavera
 country_season_locale('KR', 'ko', $date);  // 可传日期
 ```
 
-### 3. 在 webman 中使用 SeasonService（安装插件后）
+### 3. 在 Laravel / ThinkPHP / Hyperf 中使用 SeasonService
 
-插件会向容器注册 `SeasonService`，并读取 `config/plugin.erikwang2013.webman-season.app.default_country_code` 作为默认国家代码。
+安装对应集成后，容器中的 **`SeasonService`** 已与框架配置绑定（键名 **`country_season.default_country_code`**，与包内 `config/country_season.php` 一致）。`getSeasonForDefault()` 使用上述默认国家码。
+
+### 4. 在 webman 中使用 SeasonService（安装插件后）
+
+webman 需自行注册一次（例如在 `config/bootstrap.php`），再按类名从容器取出：
+
+```php
+use CountrySeason\SeasonService;
+use support\Container;
+
+Container::singleton(SeasonService::class, function () {
+    $code = config('plugin.erikwang2013.webman-season.app.default_country_code', 'CN');
+
+    return new SeasonService(\is_string($code) ? $code : 'CN');
+});
+```
 
 ```php
 use support\Container;
@@ -110,7 +153,7 @@ $seasonService->getSeasonForDefault();  // 使用配置中的 default_country_co
 $seasonService->getHemisphere('NZ');
 ```
 
-### 4. 配置（webman）
+### 5. 配置（webman）
 
 配置文件：`config/plugin/erikwang2013/webman-season/app.php`
 
@@ -147,7 +190,7 @@ return [
 
 - PHP >= 8.0
 - 扩展 **mbstring**（旗帜 Emoji 依赖 `mb_chr`）
-- 可选：webman 项目下配合 `workerman/webman-framework` 使用插件与容器
+- 可选：`workerman/webman-framework`（webman 插件）、`illuminate/support`（Laravel）、`topthink/framework`（ThinkPHP）、`hyperf/framework`（Hyperf）
 
 ## License
 

@@ -1,9 +1,9 @@
 {
-    "name": "erikwang2013/webman-season",
-    "description": "根据 ISO 3166-1 国家简码获取当前季节，支持 webman 框架",
+    "name": "erikwang2013/season",
+    "description": "根据 ISO 3166-1 国家简码获取当前季节，支持 webman / Laravel / ThinkPHP / Hyperf",
     "type": "library",
     "license": "MIT",
-    "keywords": ["iso 3166-1", "country", "season", "webman", "php"],
+    "keywords": ["iso 3166-1", "country", "season", "webman", "laravel", "thinkphp", "hyperf", "php"],
     "authors": [
         {
             "name": "erik",
@@ -15,7 +15,10 @@
         "ext-mbstring": "*"
     },
     "suggest": {
-        "workerman/webman-framework": "用于在 webman 项目中作为插件使用"
+        "workerman/webman-framework": "用于在 webman 项目中作为插件使用",
+        "illuminate/support": "Laravel 7–11 使用 CountrySeason\\Laravel\\CountrySeasonServiceProvider 时需要",
+        "topthink/framework": "ThinkPHP 6 / 8 使用 CountrySeason\\ThinkPHP\\Service 时需要",
+        "hyperf/framework": "Hyperf 2 / 3 使用 CountrySeason\\Hyperf\\ConfigProvider 时需要"
     },
     "autoload": {
         "psr-4": {
@@ -33,6 +36,19 @@
     "extra": {
         "branch-alias": {
             "dev-master": "1.0.x-dev"
+        },
+        "laravel": {
+            "providers": [
+                "CountrySeason\\Laravel\\CountrySeasonServiceProvider"
+            ]
+        },
+        "think": {
+            "services": [
+                "CountrySeason\\ThinkPHP\\Service"
+            ]
+        },
+        "hyperf": {
+            "config": "CountrySeason\\Hyperf\\ConfigProvider"
         }
     },
     "minimum-stability": "dev",
