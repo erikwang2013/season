@@ -35,7 +35,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0.x-dev"
+            "dev-main": "1.0.x-dev"
         },
         "laravel": {
             "providers": [
@@ -50,6 +50,12 @@
         "hyperf": {
             "config": "CountrySeason\\Hyperf\\ConfigProvider"
         }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0 || ^11.0 || ^12.0"
+    },
+    "scripts": {
+        "test": "phpunit"
     },
     "minimum-stability": "dev",
     "prefer-stable": true

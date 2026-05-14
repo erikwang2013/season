@@ -153,6 +153,8 @@ $seasonService->getCountryFlagEmoji('JP');
 $seasonService->getSeasonNameLocalized('FR', 'fr_FR');
 $seasonService->getSeasonForDefault();  // 使用配置中的 default_country_code
 $seasonService->getHemisphere('NZ');
+$seasonService->isValidCode('AU');          // true
+$seasonService->getSupportedLocales();       // ['ar', 'cs', 'da', ...]
 ```
 
 ### 5. 配置（webman）
@@ -182,11 +184,29 @@ return [
 | `CountrySeason::getSupportedLocales` | 内置 locale 列表 |
 | `CountrySeason::getHemisphere` | north / south |
 | `SeasonService::getSeasonForDefault` | 使用配置的默认国家 |
+| `SeasonService::isValidCode` | 校验代码格式 |
+| `SeasonService::getSupportedLocales` | 内置 locale 列表 |
 
 ### 异常与校验
 
 - 国家代码须为 **两字母 A–Z**（大小写不敏感）；否则 `getSeason`、`getCountryFlagEmoji` 等会抛出 **`InvalidArgumentException`**。
 - `isValidCode()` 仅校验格式是否为两字母字母，**不校验**是否为真实 ISO 国家码。
+
+### 扩展 CountrySeason
+
+`resolveSeasonNamesForLocale()` 和 `seasonToNameZh()` 已改为 `protected static` — 可通过继承扩展 locale 数据，无需 fork 源码。
+
+### `setDefaultCountryCode()` 即时校验
+
+`SeasonService::setDefaultCountryCode()` 在设置无效代码时立刻抛出 `InvalidArgumentException`，不再延迟到后续调用才报错。
+
+## 测试
+
+```bash
+composer test
+```
+
+44 个测试用例，覆盖季节映射、半球判断、国旗 Emoji、locale 回退、`SeasonService` 默认值以及错误处理。
 
 ## 要求
 

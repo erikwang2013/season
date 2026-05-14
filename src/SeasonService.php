@@ -7,23 +7,24 @@ namespace CountrySeason;
 use DateTimeInterface;
 
 /**
- * 季节服务（便于在 webman 容器中注入使用）
- * 国家代码由调用方动态传入，须为 ISO 3166-1 alpha-2 两字母格式。
+ * Season service for dependency injection in webman / Laravel / ThinkPHP / Hyperf containers.
  */
 class SeasonService
 {
-    /**
-     * 默认国家代码（可从 config 读取）
-     */
     private ?string $defaultCountryCode = null;
 
     public function __construct(?string $defaultCountryCode = null)
     {
-        $this->defaultCountryCode = $defaultCountryCode;
+        $this->setDefaultCountryCode($defaultCountryCode);
     }
 
     /**
-     * 获取指定国家的当前季节（国家代码动态传入）
+     * Get the season (English key) for a country code and optional date.
+     *
+     * @param string $countryCode ISO 3166-1 alpha-2 two-letter code (case-insensitive)
+     * @param DateTimeInterface|null $date Defaults to current time
+     * @return string spring | summer | autumn | winter
+     * @throws \InvalidArgumentException when the country code is invalid
      */
     public function getSeason(string $countryCode, ?DateTimeInterface $date = null): string
     {
@@ -31,7 +32,12 @@ class SeasonService
     }
 
     /**
-     * 获取季节中文名（国家代码动态传入）
+     * Get the season name in Chinese.
+     *
+     * @param string $countryCode ISO 3166-1 alpha-2 two-letter code (case-insensitive)
+     * @param DateTimeInterface|null $date Defaults to current time
+     * @return string 春 | 夏 | 秋 | 冬
+     * @throws \InvalidArgumentException when the country code is invalid
      */
     public function getSeasonNameZh(string $countryCode, ?DateTimeInterface $date = null): string
     {
@@ -39,7 +45,11 @@ class SeasonService
     }
 
     /**
-     * 根据国家简码返回旗帜 Emoji（ISO 3166-1 alpha-2）
+     * Get the Unicode flag emoji for a country code.
+     *
+     * @param string $countryCode ISO 3166-1 alpha-2 two-letter code (case-insensitive)
+     * @return string e.g. 🇨🇳, 🇺🇸
+     * @throws \InvalidArgumentException when the country code is invalid
      */
     public function getCountryFlagEmoji(string $countryCode): string
     {
@@ -47,7 +57,13 @@ class SeasonService
     }
 
     /**
-     * 按语言区域返回季节本地化名称（BCP 47，如 zh_CN、en_US、ja）
+     * Get a localized season name by BCP 47 locale.
+     *
+     * @param string $countryCode ISO 3166-1 alpha-2 two-letter code (case-insensitive)
+     * @param string $locale BCP 47 locale tag, e.g. zh_CN, en, ja_JP
+     * @param DateTimeInterface|null $date Defaults to current time
+     * @return string Localized season name
+     * @throws \InvalidArgumentException when the country code is invalid
      */
     public function getSeasonNameLocalized(
         string $countryCode,
@@ -58,7 +74,11 @@ class SeasonService
     }
 
     /**
-     * 使用默认国家代码获取季节（需在 config 中配置 default_country_code）
+     * Get the season for the configured default country code.
+     *
+     * @param DateTimeInterface|null $date Defaults to current time
+     * @return string|null Season key, or null when no default country code is configured
+     * @throws \InvalidArgumentException when the default country code is invalid
      */
     public function getSeasonForDefault(?DateTimeInterface $date = null): ?string
     {
@@ -69,15 +89,52 @@ class SeasonService
     }
 
     /**
-     * 获取半球（国家代码动态传入）
+     * Determine which hemisphere a country is in.
+     *
+     * @param string $countryCode ISO 3166-1 alpha-2 two-letter code (case-insensitive)
+     * @return string north | south
+     * @throws \InvalidArgumentException when the country code is invalid
      */
     public function getHemisphere(string $countryCode): string
     {
         return CountrySeason::getHemisphere($countryCode);
     }
 
+    /**
+     * Check whether a string looks like a valid ISO 3166-1 alpha-2 code.
+     */
+    public function isValidCode(string $countryCode): bool
+    {
+        return CountrySeason::isValidCode($countryCode);
+    }
+
+    /**
+     * Get the list of built-in locale tags.
+     *
+     * @return list<string>
+     */
+    public function getSupportedLocales(): array
+    {
+        return CountrySeason::getSupportedLocales();
+    }
+
+    /**
+     * Set the default country code.
+     *
+     * @throws \InvalidArgumentException when the code is non-null and not a valid two-letter format
+     */
     public function setDefaultCountryCode(?string $code): void
     {
-        $this->defaultCountryCode = $code ? strtoupper($code) : null;
+        if ($code === null || $code === '') {
+            $this->defaultCountryCode = null;
+            return;
+        }
+        $normalized = \strtoupper(\trim($code));
+        if (!CountrySeason::isValidCode($normalized)) {
+            throw new \InvalidArgumentException(
+                'The default country code must be a valid ISO 3166-1 alpha-2 two-letter code, got: ' . $code
+            );
+        }
+        $this->defaultCountryCode = $normalized;
     }
 }

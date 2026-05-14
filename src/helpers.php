@@ -6,13 +6,12 @@ use CountrySeason\CountrySeason;
 
 if (!function_exists('country_season')) {
     /**
-     * 根据 ISO 3166-1 国家简码获取当前季节（英文键名）
-     * 国家代码为动态传入，支持大小写。
+     * Get the season (English key) for a country code and optional date.
      *
-     * @param string $countryCode 两字母国家代码（动态传入），如 CN、US
-     * @param \DateTimeInterface|null $date 日期，默认当前时间
+     * @param string $countryCode ISO 3166-1 alpha-2 two-letter code (case-insensitive)
+     * @param \DateTimeInterface|null $date Defaults to current time
      * @return string spring | summer | autumn | winter
-     * @throws \InvalidArgumentException 当国家代码格式无效时
+     * @throws \InvalidArgumentException when the country code is invalid
      */
     function country_season(string $countryCode, ?\DateTimeInterface $date = null): string
     {
@@ -22,13 +21,12 @@ if (!function_exists('country_season')) {
 
 if (!function_exists('country_season_zh')) {
     /**
-     * 根据国家简码获取当前季节（中文）
-     * 国家代码为动态传入。
+     * Get the season name in Chinese.
      *
-     * @param string $countryCode ISO 3166-1 alpha-2（动态传入）
-     * @param \DateTimeInterface|null $date 日期
+     * @param string $countryCode ISO 3166-1 alpha-2 two-letter code (case-insensitive)
+     * @param \DateTimeInterface|null $date Defaults to current time
      * @return string 春 | 夏 | 秋 | 冬
-     * @throws \InvalidArgumentException 当国家代码格式无效时
+     * @throws \InvalidArgumentException when the country code is invalid
      */
     function country_season_zh(string $countryCode, ?\DateTimeInterface $date = null): string
     {
@@ -38,10 +36,11 @@ if (!function_exists('country_season_zh')) {
 
 if (!function_exists('country_season_flag')) {
     /**
-     * 根据国家简码返回旗帜 Emoji（Unicode 区域指示符）
+     * Get the Unicode flag emoji for a country code.
      *
-     * @param string $countryCode ISO 3166-1 alpha-2
-     * @throws \InvalidArgumentException 当国家代码格式无效时
+     * @param string $countryCode ISO 3166-1 alpha-2 two-letter code (case-insensitive)
+     * @return string e.g. 🇨🇳, 🇺🇸
+     * @throws \InvalidArgumentException when the country code is invalid
      */
     function country_season_flag(string $countryCode): string
     {
@@ -51,11 +50,13 @@ if (!function_exists('country_season_flag')) {
 
 if (!function_exists('country_season_locale')) {
     /**
-     * 按语言区域返回当前季节本地化名称
+     * Get a localized season name by BCP 47 locale.
      *
-     * @param string $countryCode ISO 3166-1 alpha-2
-     * @param string $locale      BCP 47，如 zh_CN、en、ja_JP、de_DE
-     * @param \DateTimeInterface|null $date 日期
+     * @param string $countryCode ISO 3166-1 alpha-2 two-letter code (case-insensitive)
+     * @param string $locale BCP 47 locale tag, e.g. zh_CN, en, ja_JP
+     * @param \DateTimeInterface|null $date Defaults to current time
+     * @return string Localized season name
+     * @throws \InvalidArgumentException when the country code is invalid
      */
     function country_season_locale(
         string $countryCode,

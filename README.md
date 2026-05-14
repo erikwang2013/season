@@ -151,6 +151,8 @@ $seasonService->getCountryFlagEmoji('JP');
 $seasonService->getSeasonNameLocalized('FR', 'fr_FR');
 $seasonService->getSeasonForDefault();
 $seasonService->getHemisphere('NZ');
+$seasonService->isValidCode('AU');          // true
+$seasonService->getSupportedLocales();       // ['ar', 'cs', 'da', ...]
 ```
 
 ### 5. Configuration (webman)
@@ -180,11 +182,29 @@ return [
 | `CountrySeason::getSupportedLocales` | Built-in locales |
 | `CountrySeason::getHemisphere` | north / south |
 | `SeasonService::getSeasonForDefault` | Uses configured default country |
+| `SeasonService::isValidCode` | Check code format |
+| `SeasonService::getSupportedLocales` | Built-in locales |
 
 ### Exceptions and validation
 
 - Country code must be **two letters A–Z** (case-insensitive); otherwise **`InvalidArgumentException`** from `getSeason`, `getCountryFlagEmoji`, etc.
 - `isValidCode()` only checks **format**; it does **not** validate real ISO country codes.
+
+### Extending CountrySeason
+
+`resolveSeasonNamesForLocale()` and `seasonToNameZh()` are `protected static` — subclass `CountrySeason` to add or customize locale data without forking.
+
+### `setDefaultCountryCode()` validates eagerly
+
+`SeasonService::setDefaultCountryCode()` now throws `InvalidArgumentException` immediately on an invalid code, instead of deferring the error to the next `getSeasonForDefault()` call.
+
+## Testing
+
+```bash
+composer test
+```
+
+44 tests covering season mapping, hemisphere detection, flag emoji, locale fallback, `SeasonService` defaults, and error handling.
 
 ## Requirements
 
