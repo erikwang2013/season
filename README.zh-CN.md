@@ -214,6 +214,14 @@ composer test
 - 扩展 **mbstring**（旗帜 Emoji 依赖 `mb_chr`）
 - 可选：`workerman/webman-framework`（webman 插件）、`illuminate/support`（Laravel）、`topthink/framework`（ThinkPHP）、`hyperf/framework`（Hyperf）
 
+## 开源不易，欢迎支持
+
+| 微信 | 支付宝 |
+|:---:|:---:|
+| ![微信](./docs/weixinpay.png "微信") | ![支付宝](./docs/alipay.png "支付宝") |
+
+---
+
 ## License
 
 MIT
