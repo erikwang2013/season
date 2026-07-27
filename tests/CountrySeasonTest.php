@@ -88,6 +88,15 @@ class CountrySeasonTest extends TestCase
         }
     }
 
+    public function testGetHemisphereNorthernNearEquator(): void
+    {
+        // Guyana and Suriname are in the northern hemisphere despite being in South America
+        $northernCountries = ['GY', 'SR', 'VE', 'CO', 'EC'];
+        foreach ($northernCountries as $code) {
+            $this->assertSame('north', CountrySeason::getHemisphere($code), "Failed for $code");
+        }
+    }
+
     // ── isValidCode ─────────────────────────────────────────────
 
     public function testIsValidCode(): void
@@ -238,10 +247,10 @@ class CountrySeasonTest extends TestCase
     {
         // Every listed southern hemisphere code should pass validation
         $southern = ['AQ', 'AR', 'AU', 'BV', 'BO', 'BW', 'BR', 'IO', 'BI', 'CL',
-            'CC', 'CK', 'FK', 'FJ', 'TF', 'GS', 'GY', 'HM', 'KI', 'LS',
+            'CC', 'CK', 'FK', 'FJ', 'TF', 'GS', 'HM', 'KI', 'LS',
             'MG', 'MW', 'MU', 'YT', 'NR', 'NC', 'NZ', 'NU', 'NF', 'PG',
             'PY', 'PE', 'PN', 'RE', 'RW', 'SH', 'WS', 'SC', 'SB', 'ZA',
-            'SR', 'SZ', 'TO', 'TV', 'UM', 'UY', 'VU', 'WF', 'ZM', 'ZW',
+            'SZ', 'TO', 'TV', 'UM', 'UY', 'VU', 'WF', 'ZM', 'ZW',
             'CX', 'TK', 'PF', 'CD', 'MZ', 'NA', 'TZ', 'AO', 'KM'];
         foreach ($southern as $code) {
             $this->assertSame('south', CountrySeason::getHemisphere($code), "Failed for $code");
