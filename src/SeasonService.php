@@ -16,7 +16,7 @@ use DateTimeInterface;
  * @method string|null getSeasonForDefault(?DateTimeInterface $date = null)
  * @method string getHemisphere(string $countryCode)
  * @method bool isValidCode(string $countryCode)
- * @method list<string> getSupportedLocales()
+ * @method string[] getSupportedLocales()
  */
 class SeasonService
 {
@@ -123,7 +123,8 @@ class SeasonService
     /**
      * Get the list of built-in locale tags.
      *
-     * @return list<string>
+     * @return string[]
+     * @phpstan-return array<int, string>
      */
     public function getSupportedLocales(): array
     {

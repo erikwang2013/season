@@ -11,7 +11,7 @@ class Install
 {
     public const WEBMAN_PLUGIN = true;
 
-    /** @var array 安装时复制/链接的路径对应 */
+    /** @var array<string, string> */
     protected static array $pathRelation = [
         'config/plugin/erikwang2013/season' => 'config/plugin/erikwang2013/season',
     ];
@@ -28,6 +28,9 @@ class Install
 
     protected static function installByRelation(): void
     {
+        if (!\function_exists('base_path') || !\function_exists('copy_dir')) {
+            throw new \RuntimeException('Install requires a webman environment.');
+        }
         $base = base_path();
         foreach (static::$pathRelation as $source => $dest) {
             $sourceDir = __DIR__ . '/' . $source;
@@ -45,6 +48,9 @@ class Install
 
     protected static function uninstallByRelation(): void
     {
+        if (!\function_exists('base_path') || !\function_exists('remove_dir')) {
+            throw new \RuntimeException('Install requires a webman environment.');
+        }
         $base = base_path();
         foreach (static::$pathRelation as $_source => $dest) {
             $path = $base . '/' . $dest;

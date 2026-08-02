@@ -203,10 +203,9 @@ return [
 ## 测试
 
 ```bash
-composer test
+composer test       # PHPUnit（46 个测试）
+composer analyse    # PHPStan 静态分析
 ```
-
-44 个测试用例，覆盖季节映射、半球判断、国旗 Emoji、locale 回退、`SeasonService` 默认值以及错误处理。
 
 ## 要求
 
@@ -218,7 +217,7 @@ composer test
 
 | 微信 | 支付宝 |
 |:---:|:---:|
-| ![微信](./docs/weixinpay.png "微信") | ![支付宝](./docs/alipay.png "支付宝") |
+| <img src="./docs/weixinpay.png" alt="微信" width="130" height="130" /> | <img src="./docs/alipay.png" alt="支付宝" width="130" height="130" /> |
 
 ---
 

@@ -1,0 +1,11 @@
+parameters:
+    level: 5
+    paths:
+        - src/
+        - tests/
+    excludePaths:
+        - src/Laravel/*
+        - src/ThinkPHP/*
+        - src/Hyperf/*
+    universalObjectCratesClasses:
+        - Erikwang2013\Season\Install

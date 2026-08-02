@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * 默认国家代码（ISO 3166-1 alpha-2），用于 SeasonService::getSeasonForDefault()
  *

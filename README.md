@@ -201,10 +201,9 @@ return [
 ## Testing
 
 ```bash
-composer test
+composer test       # PHPUnit (46 tests)
+composer analyse    # PHPStan (static analysis)
 ```
-
-44 tests covering season mapping, hemisphere detection, flag emoji, locale fallback, `SeasonService` defaults, and error handling.
 
 ## Requirements
 
@@ -212,11 +211,11 @@ composer test
 - **mbstring** extension (flag emoji uses `mb_chr`)
 - Optional: `workerman/webman-framework`, `illuminate/support`, `topthink/framework`, `hyperf/framework`
 
-## 开源不易，欢迎支持
+## 开源不易，欢迎支持 / Support This Project
 
-| 微信 | 支付宝 |
+| WeChat Pay | Alipay |
 |:---:|:---:|
-| ![微信](./docs/weixinpay.png "微信") | ![支付宝](./docs/alipay.png "支付宝") |
+| <img src="./docs/weixinpay.png" alt="WeChat Pay" width="130" height="130" /> | <img src="./docs/alipay.png" alt="Alipay" width="130" height="130" /> |
 
 ---
 

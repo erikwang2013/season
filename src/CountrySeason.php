@@ -159,7 +159,8 @@ class CountrySeason
     /**
      * Get the list of built-in locale tags (lowercase, underscore).
      *
-     * @return list<string>
+     * @return string[]
+     * @phpstan-return array<int, string>
      */
     public static function getSupportedLocales(): array
     {
@@ -205,6 +206,7 @@ class CountrySeason
             self::SEASON_SUMMER => '夏',
             self::SEASON_AUTUMN => '秋',
             self::SEASON_WINTER => '冬',
+            default => throw new \InvalidArgumentException("Unknown season: $season"),
         };
     }
 
@@ -213,7 +215,8 @@ class CountrySeason
      *
      * Resolution order: exact match (including overrides), then language-only fallback, then en.
      *
-     * @return array<string, string> season key => localized name
+     * @return array<string, string>
+     * @phpstan-return array<string, string>
      */
     protected static function resolveSeasonNamesForLocale(string $locale): array
     {
