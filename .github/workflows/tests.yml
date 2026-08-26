@@ -6,11 +6,23 @@ jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        php: ['8.1', '8.2', '8.3', '8.4']
+        php: ['8.0', '8.1', '8.2', '8.3', '8.4', '8.5']
     steps:
       - uses: actions/checkout@v4
-      - uses: php-actions/composer@v6
+      - uses: shivammathur/setup-php@v2
         with:
-          php_version: ${{ matrix.php }}
-      - run: vendor/bin/phpunit
+          php-version: ${{ matrix.php }}
+          extensions: mbstring
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction
+      - name: Run tests
+        run: |
+          if [ "${{ matrix.php }}" = "8.0" ]; then
+            vendor/bin/phpunit -c phpunit.php80.xml.dist --no-coverage
+          else
+            vendor/bin/phpunit --no-coverage
+          fi
+      - name: Static analysis (PHPStan)
+        run: vendor/bin/phpstan analyse --no-progress

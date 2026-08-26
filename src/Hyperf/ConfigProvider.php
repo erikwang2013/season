@@ -27,7 +27,7 @@ class ConfigProvider
                     'id' => 'country-season-config',
                     'description' => 'Country season default config',
                     'source' => __DIR__ . '/../../config/country_season.php',
-                    'destination' => BASE_PATH . '/config/autoload/country_season.php',
+                    'destination' => (\defined('BASE_PATH') ? BASE_PATH . '/' : '') . 'config/autoload/country_season.php',
                 ],
             ],
         ];

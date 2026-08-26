@@ -6,6 +6,7 @@
 .DS_Store
 Thumbs.db
 .phpunit.cache
+/tests/reports/
 .claude
 .claude-flow
 .swarm

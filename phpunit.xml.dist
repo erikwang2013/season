@@ -14,4 +14,15 @@
             <directory>src</directory>
         </include>
     </source>
+    <coverage>
+        <report>
+            <clover outputFile="tests/reports/clover.xml"/>
+            <html outputDirectory="tests/reports/coverage-html"/>
+            <text outputFile="tests/reports/coverage.txt"/>
+        </report>
+    </coverage>
+    <logging>
+        <junit outputFile="tests/reports/junit.xml"/>
+        <testdoxHtml outputFile="tests/reports/testdox.html"/>
+    </logging>
 </phpunit>

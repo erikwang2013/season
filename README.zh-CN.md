@@ -209,7 +209,7 @@ composer analyse    # PHPStan 静态分析
 
 ## 要求
 
-- PHP >= 8.1
+- PHP >= 8.0
 - 扩展 **mbstring**（旗帜 Emoji 依赖 `mb_chr`）
 - 可选：`workerman/webman-framework`（webman 插件）、`illuminate/support`（Laravel）、`topthink/framework`（ThinkPHP）、`hyperf/framework`（Hyperf）
 

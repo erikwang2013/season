@@ -207,7 +207,7 @@ composer analyse    # PHPStan (static analysis)
 
 ## Requirements
 
-- PHP >= 8.1
+- PHP >= 8.0
 - **mbstring** extension (flag emoji uses `mb_chr`)
 - Optional: `workerman/webman-framework`, `illuminate/support`, `topthink/framework`, `hyperf/framework`
 

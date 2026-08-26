@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Erikwang2013\Season\Tests;
 
 use Erikwang2013\Season\CountrySeason;
+use Erikwang2013\Season\LocaleData;
 use PHPUnit\Framework\TestCase;
 
 class CountrySeasonTest extends TestCase
@@ -173,6 +174,13 @@ class CountrySeasonTest extends TestCase
         $this->assertSame('Fall', CountrySeason::getSeasonNameLocalized('US', 'en-us', new \DateTimeImmutable('2026-10-15')));
     }
 
+    public function testGetSeasonNameLocalizedUppercaseLocale(): void
+    {
+        $this->assertSame('Fall', CountrySeason::getSeasonNameLocalized('US', 'EN_US', new \DateTimeImmutable('2026-10-15')));
+        $this->assertSame('夏', CountrySeason::getSeasonNameLocalized('CN', 'ZH_CN', new \DateTimeImmutable('2026-07-15')));
+        $this->assertSame('Fall', CountrySeason::getSeasonNameLocalized('US', 'En-Us', new \DateTimeImmutable('2026-10-15')));
+    }
+
     public function testGetSeasonNameLocalizedFallbackToLanguage(): void
     {
         // zh_TW falls through to zh (same names, no override needed)
@@ -203,6 +211,16 @@ class CountrySeasonTest extends TestCase
         $this->assertContains('de', $locales);
     }
 
+    public function testGetSupportedLocalesCoversAllLocaleDataKeys(): void
+    {
+        $locales = CountrySeason::getSupportedLocales();
+        $keys = array_merge(array_keys(LocaleData::NAMES), array_keys(LocaleData::OVERRIDES));
+        foreach ($keys as $key) {
+            $this->assertContains($key, $locales, "Missing locale: $key");
+        }
+        $this->assertCount(count(array_unique($keys)), $locales);
+    }
+
     // ── Exceptions ──────────────────────────────────────────────
 
     public function testInvalidCodeThrowsException(): void
@@ -215,6 +233,12 @@ class CountrySeasonTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         CountrySeason::getSeason('');
+    }
+
+    public function testWhitespaceOnlyCodeThrowsException(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        CountrySeason::getSeason('   ');
     }
 
     public function testNumericCodeThrowsException(): void

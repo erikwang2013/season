@@ -1,0 +1,52 @@
+name: Release
+
+# 推送规则：push 到 main 后读取 composer.json 的最新版本，
+# 与现有最新 tag 比较，版本更新时增量创建 tag + GitHub Release。
+# 按需求取消打包：不附加任何应用构建产物，仅创建标签与版本说明。
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Read version from composer.json
+        id: version
+        run: |
+          version=$(jq -r '.version // empty' composer.json)
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Get latest tag
+        id: latest
+        run: |
+          latest=$(git tag --list 'v*' --sort=-v:refname | head -n 1)
+          echo "tag=${latest:-none}" >> "$GITHUB_OUTPUT"
+
+      - name: Create tag and release incrementally
+        if: steps.version.outputs.version != '' && steps.latest.outputs.tag != format('v{0}', steps.version.outputs.version)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          NOTES="$(mktemp)"
+          if [ "${{ steps.latest.outputs.tag }}" != "none" ]; then
+            git log --oneline "${{ steps.latest.outputs.tag }}..HEAD" > "$NOTES" || true
+          else
+            git log --oneline -20 > "$NOTES" || true
+          fi
+          gh release create "v${{ steps.version.outputs.version }}" \
+            --title "v${{ steps.version.outputs.version }}" \
+            --notes-file "$NOTES" \
+            --target "${{ github.sha }}"
+
+      - name: No version change
+        if: steps.version.outputs.version == '' || steps.latest.outputs.tag == format('v{0}', steps.version.outputs.version)
+        run: echo "composer.json 版本与最新 tag 一致，无需创建新的 release/tag"

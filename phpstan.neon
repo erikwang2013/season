@@ -1,5 +1,6 @@
 parameters:
     level: 5
+    phpVersion: 80000
     paths:
         - src/
         - tests/
@@ -7,5 +8,9 @@ parameters:
         - src/Laravel/*
         - src/ThinkPHP/*
         - src/Hyperf/*
+        - tests/Stubs/phpstan/*
+        - tests/Stubs/Illuminate/*
     universalObjectCratesClasses:
         - Erikwang2013\Season\Install
+    stubFiles:
+        - tests/Stubs/phpstan/illuminate.php

@@ -125,11 +125,6 @@ class CountrySeason
         $code = self::normalizeCountryCode($countryCode);
         $a = \ord($code[0]) - 65;
         $b = \ord($code[1]) - 65;
-        if ($a < 0 || $a > 25 || $b < 0 || $b > 25) {
-            throw new \InvalidArgumentException(
-                'Invalid country code for flag emoji: ' . $code
-            );
-        }
         $base = 0x1F1E6;
         return \mb_chr($base + $a, 'UTF-8')
             . \mb_chr($base + $b, 'UTF-8');
@@ -182,7 +177,7 @@ class CountrySeason
         if ($code === '' || !self::isValidCode($code)) {
             throw new \InvalidArgumentException(
                 'The country code must be in the two letter format of ISO 3166-1 alpha-2, currently passed in: '
-                . (\strlen($countryCode) > 20 ? \substr($countryCode, 0, 20) . '...' : $countryCode)
+                . (\strlen($code) > 20 ? \substr($code, 0, 20) . '...' : $code)
             );
         }
         return $code;
