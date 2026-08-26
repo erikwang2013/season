@@ -22,7 +22,6 @@ class LocaleDataTest extends TestCase
         foreach (LocaleData::NAMES as $locale => $names) {
             $this->assertSame(self::SEASON_KEYS, array_keys($names), "Season key mismatch for locale: $locale");
             foreach ($names as $season => $name) {
-                $this->assertIsString($name, "Locale $locale season $season is not a string");
                 $this->assertNotSame('', $name, "Locale $locale season $season is empty");
             }
         }
@@ -41,7 +40,6 @@ class LocaleDataTest extends TestCase
         foreach (LocaleData::OVERRIDES as $locale => $names) {
             $this->assertSame(self::SEASON_KEYS, array_keys($names), "Season key mismatch for override: $locale");
             foreach ($names as $season => $name) {
-                $this->assertIsString($name, "Override $locale season $season is not a string");
                 $this->assertNotSame('', $name, "Override $locale season $season is empty");
             }
         }

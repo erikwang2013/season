@@ -202,7 +202,6 @@ class CountrySeasonTest extends TestCase
     public function testGetSupportedLocales(): void
     {
         $locales = CountrySeason::getSupportedLocales();
-        $this->assertIsArray($locales);
         $this->assertNotEmpty($locales);
         $this->assertContains('en', $locales);
         $this->assertContains('en_us', $locales);

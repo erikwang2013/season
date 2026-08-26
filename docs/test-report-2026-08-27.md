@@ -13,7 +13,7 @@
 | 指标 | 结果 |
 |------|------|
 | 测试用例 | 83 |
-| 断言数 | 595 |
+| 断言数 | 477 |
 | 通过 | 83 ✓ |
 | 失败 | 0 |
 | 错误 | 0 |
@@ -65,6 +65,7 @@
 | F6 | `.phpunit.cache/test-results` 被 git 误跟踪 | ✅ 已解除跟踪 |
 | F7 | release.yml 使用无效表达式 `github.GITHUB_TOKEN` | ✅ 已改为 `secrets.GITHUB_TOKEN` |
 | F8 | CI 未运行 PHPStan、pcov 在 PHP 8.5 腿有风险 | ✅ tests.yml 增加 PHPStan 步骤、去除 pcov、phpunit `--no-coverage` |
+| F9 | CI PHPStan 报告测试中 4 处恒真断言（assertTrue(true)、assertIsString/assertIsArray 于已确定类型） | ✅ 删除冗余断言、`expectNotToPerformAssertions()` 声明意图，6 腿 CI 转绿 |
 
 ---
 

@@ -46,6 +46,6 @@ class ServiceTest extends TestCase
         $service->register();
         $service->boot();
 
-        $this->assertTrue(true);
+        $this->expectNotToPerformAssertions();
     }
 }
