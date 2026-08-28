@@ -83,7 +83,7 @@ class CountrySeasonTest extends TestCase
 
     public function testGetHemisphereSouthern(): void
     {
-        $southernCountries = ['AU', 'AR', 'BR', 'NZ', 'ZA', 'CL', 'UY', 'PY', 'PE'];
+        $southernCountries = ['AU', 'AR', 'BR', 'NZ', 'ZA', 'CL', 'UY', 'PY', 'PE', 'CD', 'TL', 'AS'];
         foreach ($southernCountries as $code) {
             $this->assertSame('south', CountrySeason::getHemisphere($code), "Failed for $code");
         }
@@ -91,11 +91,22 @@ class CountrySeasonTest extends TestCase
 
     public function testGetHemisphereNorthernNearEquator(): void
     {
-        // Guyana and Suriname are in the northern hemisphere despite being in South America
-        $northernCountries = ['GY', 'SR', 'VE', 'CO', 'EC'];
+        // Guyana and Suriname are in the northern hemisphere despite being in South America;
+        // Kiribati (KI) and US Minor Outlying Islands (UM) are majority-north despite straddling the equator
+        $northernCountries = ['GY', 'SR', 'VE', 'CO', 'EC', 'KI', 'UM'];
         foreach ($northernCountries as $code) {
             $this->assertSame('north', CountrySeason::getHemisphere($code), "Failed for $code");
         }
+    }
+
+    public function testHemisphereCodeCorrections(): void
+    {
+        // Regression: TL (Timor-Leste) and AS (American Samoa) are southern hemisphere
+        $this->assertSame('south', CountrySeason::getHemisphere('TL'));
+        $this->assertSame('south', CountrySeason::getHemisphere('AS'));
+        // Regression: KI (Kiribati) and UM (US Minor Outlying Islands) are northern hemisphere
+        $this->assertSame('north', CountrySeason::getHemisphere('KI'));
+        $this->assertSame('north', CountrySeason::getHemisphere('UM'));
     }
 
     // ── isValidCode ─────────────────────────────────────────────
@@ -269,11 +280,11 @@ class CountrySeasonTest extends TestCase
     public function testAllSouthernCountriesAreValid(): void
     {
         // Every listed southern hemisphere code should pass validation
-        $southern = ['AQ', 'AR', 'AU', 'BV', 'BO', 'BW', 'BR', 'IO', 'BI', 'CL',
-            'CC', 'CK', 'FK', 'FJ', 'TF', 'GS', 'HM', 'KI', 'LS',
+        $southern = ['AQ', 'AR', 'AS', 'AU', 'BV', 'BO', 'BW', 'BR', 'IO', 'BI', 'CL',
+            'CC', 'CK', 'FK', 'FJ', 'TF', 'GS', 'HM', 'LS',
             'MG', 'MW', 'MU', 'YT', 'NR', 'NC', 'NZ', 'NU', 'NF', 'PG',
             'PY', 'PE', 'PN', 'RE', 'RW', 'SH', 'WS', 'SC', 'SB', 'ZA',
-            'SZ', 'TO', 'TV', 'UM', 'UY', 'VU', 'WF', 'ZM', 'ZW',
+            'SZ', 'TL', 'TO', 'TV', 'UY', 'VU', 'WF', 'ZM', 'ZW',
             'CX', 'TK', 'PF', 'CD', 'MZ', 'NA', 'TZ', 'AO', 'KM'];
         foreach ($southern as $code) {
             $this->assertSame('south', CountrySeason::getHemisphere($code), "Failed for $code");

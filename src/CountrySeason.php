@@ -29,15 +29,15 @@ class CountrySeason
      * default to northern hemisphere season mapping.
      */
     private const SOUTH_HEMISPHERE_CODES = [
-        'AQ' => true, 'AR' => true, 'AU' => true, 'BV' => true, 'BO' => true,
-        'BW' => true, 'BR' => true, 'IO' => true, 'BI' => true, 'CL' => true,
+        'AQ' => true, 'AR' => true, 'AS' => true, 'AU' => true, 'BV' => true,
+        'BO' => true, 'BW' => true, 'BR' => true, 'IO' => true, 'BI' => true, 'CL' => true,
         'CC' => true, 'CK' => true, 'FK' => true, 'FJ' => true, 'TF' => true,
-        'GS' => true, 'HM' => true, 'KI' => true, 'LS' => true,
+        'GS' => true, 'HM' => true, 'LS' => true,
         'MG' => true, 'MW' => true, 'MU' => true, 'YT' => true, 'NR' => true,
         'NC' => true, 'NZ' => true, 'NU' => true, 'NF' => true, 'PG' => true,
         'PY' => true, 'PE' => true, 'PN' => true, 'RE' => true, 'RW' => true,
         'SH' => true, 'WS' => true, 'SC' => true, 'SB' => true, 'ZA' => true,
-        'SZ' => true, 'TO' => true, 'TV' => true, 'UM' => true,
+        'SZ' => true, 'TL' => true, 'TO' => true, 'TV' => true,
         'UY' => true, 'VU' => true, 'WF' => true, 'ZM' => true, 'ZW' => true,
         'CX' => true, 'TK' => true, 'PF' => true, 'CD' => true, 'MZ' => true,
         'NA' => true, 'TZ' => true, 'AO' => true, 'KM' => true,
