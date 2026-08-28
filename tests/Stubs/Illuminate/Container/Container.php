@@ -69,11 +69,6 @@ class Container implements \ArrayAccess
         $this->bindings[$abstract] = $concrete;
     }
 
-    public function bind($abstract, $concrete = null): void
-    {
-        $this->bindings[$abstract] = $concrete;
-    }
-
     /**
      * @return mixed
      */

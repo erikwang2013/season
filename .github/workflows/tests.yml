@@ -25,4 +25,5 @@ jobs:
             vendor/bin/phpunit --no-coverage
           fi
       - name: Static analysis (PHPStan)
+        if: matrix.php == '8.1'
         run: vendor/bin/phpstan analyse --no-progress

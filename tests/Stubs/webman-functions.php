@@ -11,12 +11,6 @@ declare(strict_types=1);
 final class WebmanFixture
 {
     public static ?string $basePath = null;
-
-    /** @var array<int, array{0: string, 1: string}> */
-    public static array $copied = [];
-
-    /** @var array<int, string> */
-    public static array $removed = [];
 }
 
 if (!function_exists('base_path')) {
@@ -30,7 +24,6 @@ if (!function_exists('base_path')) {
 if (!function_exists('copy_dir')) {
     function copy_dir(string $sourceDir, string $destDir): void
     {
-        WebmanFixture::$copied[] = [$sourceDir, $destDir];
         if (!is_dir($destDir)) {
             mkdir($destDir, 0755, true);
         }
@@ -54,7 +47,6 @@ if (!function_exists('copy_dir')) {
 if (!function_exists('remove_dir')) {
     function remove_dir(string $dir): void
     {
-        WebmanFixture::$removed[] = $dir;
         if (is_file($dir)) {
             unlink($dir);
             return;

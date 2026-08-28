@@ -7,6 +7,7 @@ name: Release
 on:
   push:
     branches: [main]
+    paths: ['composer.json']
 
 permissions:
   contents: write
