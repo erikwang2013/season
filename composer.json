@@ -10,7 +10,7 @@
             "email": "erik@erik.xyz"
         }
     ],
-    "version": "2.0.3",
+    "version": "2.0.4",
     "require": {
         "php": ">=8.0",
         "ext-mbstring": "*"
