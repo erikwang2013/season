@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 620" width="960" height="620" role="img" aria-labelledby="fn-title fn-desc"
+     font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Source Han Sans SC, sans-serif">
+  <title id="fn-title">season 功能设计：输入、核心与八类能力</title>
+  <desc id="fn-desc">功能地图。左侧为输入（国家码、可选日期、可选 locale、配置默认国家码），中间为 CountrySeason 与 SeasonService 核心，右侧八张能力卡片分别是季节解析、中文名称、国旗 Emoji、多语言名称、半球判断、代码校验、默认国家与季节性吉祥物，底部为四种框架的集成能力。</desc>
+
+  <defs>
+    <marker id="ar-f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#8FA8A2"/>
+    </marker>
+    <linearGradient id="f-spring" x1="0" y1="0" x2="0.5" y2="1">
+      <stop offset="0" stop-color="#A8E7BC"/>
+      <stop offset="1" stop-color="#5FBF6A"/>
+    </linearGradient>
+    <linearGradient id="f-autumn" x1="1" y1="1" x2="0.1" y2="0.1">
+      <stop offset="0" stop-color="#EE8A44"/>
+      <stop offset="1" stop-color="#F3B96C"/>
+    </linearGradient>
+    <clipPath id="f-body">
+      <circle cx="395" cy="218" r="40"/>
+    </clipPath>
+  </defs>
+
+  <rect x="0" y="0" width="960" height="620" rx="28" fill="#F7FAF9"/>
+  <text x="40" y="56" font-size="24" font-weight="700" fill="#22313A">功能设计 · Feature Map</text>
+  <text x="40" y="82" font-size="13" fill="#6B7C86">一个入口（国家码 + 可选日期）：八类能力全部为纯函数，同输入同输出，无网络、无数据库、无全局状态。</text>
+
+  <!-- ── 输入 ── -->
+  <rect x="40" y="110" width="230" height="170" rx="16" fill="#FFFFFF" stroke="#E1EBE8" stroke-width="1.5"/>
+  <text x="56" y="138" font-size="13" font-weight="700" fill="#22313A">输入 · Input</text>
+  <g font-size="11" fill="#5A6B75">
+    <text x="56" y="166">国家码 country_code</text>
+    <text x="56" y="182" font-size="10" fill="#8FA8A2">ISO 3166-1 alpha-2，大小写不敏感</text>
+    <text x="56" y="208">日期 date（可选）</text>
+    <text x="56" y="224" font-size="10" fill="#8FA8A2">默认取当前时间</text>
+    <text x="56" y="250">locale（可选）</text>
+    <text x="56" y="266" font-size="10" fill="#8FA8A2">BCP 47：zh_CN、en_US、de …</text>
+  </g>
+
+  <!-- ── 输入下方：配置 ── -->
+  <rect x="40" y="298" width="230" height="158" rx="16" fill="#FFFFFF" stroke="#E1EBE8" stroke-width="1.5"/>
+  <text x="56" y="326" font-size="13" font-weight="700" fill="#22313A">配置 · Config</text>
+  <g font-size="10.5" fill="#5A6B75">
+    <text x="56" y="352">default_country_code</text>
+    <text x="56" y="370">env COUNTRY_SEASON_DEFAULT</text>
+    <text x="56" y="388" fill="#8FA8A2">（默认 CN，可发布后修改）</text>
+    <text x="56" y="416">处理顺序见</text>
+    <text x="56" y="434" fill="#3C8FD1">docs/lifecycle.svg</text>
+  </g>
+  <line x1="56" y1="396" x2="254" y2="396" stroke="#EAF1EF" stroke-width="1.5"/>
+
+  <!-- ── 核心 ── -->
+  <rect x="310" y="110" width="170" height="346" rx="16" fill="#FFFFFF" stroke="#E1EBE8" stroke-width="1.5"/>
+  <text x="395" y="146" font-size="13" font-weight="700" fill="#22313A" text-anchor="middle">核心 · Core</text>
+  <circle cx="395" cy="218" r="40" fill="url(#f-spring)"/>
+  <g clip-path="url(#f-body)">
+    <circle cx="416" cy="238" r="48" fill="url(#f-autumn)"/>
+  </g>
+  <circle cx="395" cy="218" r="40" fill="none" stroke="#22313A" stroke-opacity=".14" stroke-width="1.5"/>
+  <g fill="#22313A">
+    <circle cx="382" cy="212" r="4"/>
+    <circle cx="408" cy="212" r="4"/>
+  </g>
+  <path d="M389 224 Q395 230 401 224" fill="none" stroke="#22313A" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M395 178 C 395 172 395 168 395 164" fill="none" stroke="#5FBF6A" stroke-width="3" stroke-linecap="round"/>
+  <path d="M395 170 C 387 171 382 166 383 159 C 390 160 394 164 395 170 Z" fill="#5FBF6A"/>
+  <text x="395" y="288" font-size="12.5" font-weight="700" fill="#22313A" text-anchor="middle">CountrySeason</text>
+  <text x="395" y="306" font-size="12.5" font-weight="700" fill="#22313A" text-anchor="middle">SeasonService</text>
+  <g font-size="10" fill="#8FA8A2" text-anchor="middle">
+    <text x="395" y="332">静态门面 + 容器服务</text>
+    <text x="395" y="350">纯函数，无副作用</text>
+    <text x="395" y="368">protected static 可继承覆写</text>
+    <text x="395" y="396" fill="#3C8FD1">helpers.php 四个全局函数</text>
+    <text x="395" y="412">country_season · _zh</text>
+    <text x="395" y="426">_flag · _locale</text>
+    <text x="395" y="448" fill="#3C8FD1">Mascot 吉祥物</text>
+  </g>
+
+  <g stroke="#8FA8A2" stroke-width="2" marker-end="url(#ar-f)" fill="none">
+    <line x1="272" y1="195" x2="306" y2="195"/>
+    <path d="M482 283 C 500 283 508 148 526 148"/>
+    <path d="M482 283 C 500 283 508 238 526 238"/>
+    <path d="M482 283 C 500 283 508 328 526 328"/>
+    <path d="M482 283 C 500 283 508 418 526 418"/>
+  </g>
+
+  <!-- ── 能力卡片 ── -->
+  <g>
+    <rect x="530" y="110" width="186" height="76" rx="14" fill="#EEF8F1" stroke="#CBE7D5" stroke-width="1.5"/>
+    <text x="542" y="132" font-size="12" font-weight="700" fill="#1F5B39">季节解析</text>
+    <text x="542" y="152" font-size="9.5" fill="#5E8A73">getSeason('CN')</text>
+    <text x="542" y="171" font-size="10" fill="#1F5B39">→ 'spring' … 'winter'</text>
+
+    <rect x="734" y="110" width="186" height="76" rx="14" fill="#EEF8F1" stroke="#CBE7D5" stroke-width="1.5"/>
+    <text x="746" y="132" font-size="12" font-weight="700" fill="#1F5B39">中文名称</text>
+    <text x="746" y="152" font-size="9.5" fill="#5E8A73">getSeasonNameZh('CN')</text>
+    <text x="746" y="171" font-size="10" fill="#1F5B39">→ 春 / 夏 / 秋 / 冬</text>
+
+    <rect x="530" y="200" width="186" height="76" rx="14" fill="#FFF6EC" stroke="#F2DDC4" stroke-width="1.5"/>
+    <text x="542" y="221" font-size="12" font-weight="700" fill="#8A4B14">表情 Emoji</text>
+    <text x="542" y="241" font-size="9.5" fill="#946B44">getCountryFlagEmoji('CN') → 🇨🇳</text>
+    <text x="542" y="259" font-size="9.5" fill="#946B44">getSeasonEmoji('CN') → ❄️</text>
+
+    <rect x="734" y="200" width="186" height="76" rx="14" fill="#FFF6EC" stroke="#F2DDC4" stroke-width="1.5"/>
+    <text x="746" y="222" font-size="12" font-weight="700" fill="#8A4B14">多语言名称</text>
+    <text x="746" y="242" font-size="9.5" fill="#946B44">getSeasonNameLocalized(</text>
+    <text x="746" y="256" font-size="9.5" fill="#946B44">  'DE', 'de_DE')  → Frühling</text>
+
+    <rect x="530" y="290" width="186" height="76" rx="14" fill="#EEF5FC" stroke="#D3E5F5" stroke-width="1.5"/>
+    <text x="542" y="312" font-size="12" font-weight="700" fill="#245B86">半球判断</text>
+    <text x="542" y="332" font-size="9.5" fill="#5A7FA0">getHemisphere('AU')</text>
+    <text x="542" y="351" font-size="10" fill="#245B86">→ 'north' / 'south'</text>
+
+    <rect x="734" y="290" width="186" height="76" rx="14" fill="#EEF5FC" stroke="#D3E5F5" stroke-width="1.5"/>
+    <text x="746" y="312" font-size="12" font-weight="700" fill="#245B86">代码校验</text>
+    <text x="746" y="332" font-size="9.5" fill="#5A7FA0">isValidCode('XX')</text>
+    <text x="746" y="351" font-size="10" fill="#245B86">→ true / false（仅格式）</text>
+
+    <rect x="530" y="380" width="186" height="76" rx="14" fill="#F3F1FB" stroke="#DEDAF2" stroke-width="1.5"/>
+    <text x="542" y="402" font-size="12" font-weight="700" fill="#3F3A66">默认国家</text>
+    <text x="542" y="422" font-size="9.5" fill="#6C679A">getSeasonForDefault()</text>
+    <text x="542" y="441" font-size="10" fill="#3F3A66">→ 按配置的国家码</text>
+
+    <rect x="734" y="380" width="186" height="76" rx="14" fill="#FDF0F5" stroke="#F2D7E3" stroke-width="1.5"/>
+    <text x="746" y="402" font-size="12" font-weight="700" fill="#8A2B52">吉祥物 Mascot</text>
+    <text x="746" y="422" font-size="9.5" fill="#9C6280">Mascot::forCountry('AU')</text>
+    <text x="746" y="441" font-size="10" fill="#8A2B52">→ 按季节着色的 SVG</text>
+  </g>
+
+  <!-- ── 集成能力 ── -->
+  <rect x="40" y="478" width="880" height="88" rx="16" fill="#FFFFFF" stroke="#E1EBE8" stroke-width="1.5"/>
+  <text x="56" y="506" font-size="13" font-weight="700" fill="#22313A">集成能力 · Integrations</text>
+  <text x="270" y="506" font-size="11" fill="#8FA8A2">同一套 API，四种框架容器可选绑定（安装即用，不装也不影响纯 Composer 用法）</text>
+  <g font-size="10.5" fill="#5A6B75" text-anchor="middle">
+    <rect x="56" y="518" width="196" height="32" rx="10" fill="#F4F8FF" stroke="#D8E6F8" stroke-width="1.2"/>
+    <text x="154" y="538" font-weight="600" fill="#245B86">Laravel｜ServiceProvider</text>
+    <rect x="266" y="518" width="196" height="32" rx="10" fill="#F4F8FF" stroke="#D8E6F8" stroke-width="1.2"/>
+    <text x="364" y="538" font-weight="600" fill="#245B86">ThinkPHP｜think\Service</text>
+    <rect x="476" y="518" width="196" height="32" rx="10" fill="#F4F8FF" stroke="#D8E6F8" stroke-width="1.2"/>
+    <text x="574" y="538" font-weight="600" fill="#245B86">Hyperf｜ConfigProvider</text>
+    <rect x="686" y="518" width="196" height="32" rx="10" fill="#F4F8FF" stroke="#D8E6F8" stroke-width="1.2"/>
+    <text x="784" y="538" font-weight="600" fill="#245B86">webman｜Install 插件</text>
+  </g>
+
+  <text x="40" y="598" font-size="11" fill="#8FA8A2">示例输出随「当前日期 + 国家所在半球」变化：同一个 7 月，北半球是 summer，南半球是 winter。无效国家码统一抛 InvalidArgumentException。</text>
+</svg>

@@ -36,6 +36,23 @@ class HelpersTest extends TestCase
         country_season('XXX');
     }
 
+    // ── country_season_emoji ───────────────────────────────────
+
+    public function testCountrySeasonEmojiMatchesStaticApi(): void
+    {
+        $july = new \DateTimeImmutable('2026-07-15');
+
+        $this->assertSame(CountrySeason::getSeasonEmoji('CN', $july), country_season_emoji('CN', $july));
+        $this->assertSame("\u{2600}\u{FE0F}", country_season_emoji('CN', $july));
+        $this->assertSame("\u{2744}\u{FE0F}", country_season_emoji('AU', $july));
+    }
+
+    public function testCountrySeasonEmojiInvalidCodeThrows(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        country_season_emoji('XX1');
+    }
+
     // ── country_season_zh ──────────────────────────────────────
 
     public function testCountrySeasonZhMatchesStaticApi(): void

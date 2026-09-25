@@ -48,6 +48,38 @@ if (!function_exists('country_season_flag')) {
     }
 }
 
+if (!function_exists('country_season_emoji')) {
+    /**
+     * Get the emoji for a country's current season.
+     *
+     * @param string $countryCode ISO 3166-1 alpha-2 two-letter code (case-insensitive)
+     * @param \DateTimeInterface|null $date Defaults to current time
+     * @return string 🌸 | ☀️ | 🍁 | ❄️
+     * @throws \InvalidArgumentException when the country code is invalid
+     */
+    function country_season_emoji(string $countryCode, ?\DateTimeInterface $date = null): string
+    {
+        return CountrySeason::getSeasonEmoji($countryCode, $date);
+    }
+}
+
+if (!function_exists('country_season_mascot')) {
+    /**
+     * Get the project mascot Seasony as inline SVG, themed by a country's current season.
+     *
+     * @param string|null $countryCode ISO 3166-1 alpha-2 code; null returns the neutral mascot
+     * @param \DateTimeInterface|null $date Defaults to current time
+     * @return string SVG markup
+     * @throws \InvalidArgumentException when the country code is invalid
+     */
+    function country_season_mascot(?string $countryCode = null, ?\DateTimeInterface $date = null): string
+    {
+        return $countryCode === null
+            ? \Erikwang2013\Season\Mascot::svg()
+            : \Erikwang2013\Season\Mascot::forCountry($countryCode, $date);
+    }
+}
+
 if (!function_exists('country_season_locale')) {
     /**
      * Get a localized season name by BCP 47 locale.

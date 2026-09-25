@@ -277,6 +277,38 @@ class CountrySeasonTest extends TestCase
         $this->assertSame('summer', CountrySeason::getSeason('CN', new \DateTimeImmutable('2026-06-01')));
     }
 
+    public function testGetSeasonEmojiFollowsSeasonAndHemisphere(): void
+    {
+        $july = new \DateTimeImmutable('2026-07-15');
+        $january = new \DateTimeImmutable('2026-01-15');
+
+        $this->assertSame('🌸', CountrySeason::getSeasonEmoji('CN', new \DateTimeImmutable('2026-04-01')));
+        $this->assertSame("\u{2600}\u{FE0F}", CountrySeason::getSeasonEmoji('CN', $july));
+        $this->assertSame('🍁', CountrySeason::getSeasonEmoji('CN', new \DateTimeImmutable('2026-10-01')));
+        $this->assertSame("\u{2744}\u{FE0F}", CountrySeason::getSeasonEmoji('CN', $january));
+
+        // 南半球同一时刻季节相反，所以 Emoji 也跟着相反
+        $this->assertSame("\u{2744}\u{FE0F}", CountrySeason::getSeasonEmoji('AU', $july));
+        $this->assertSame("\u{2600}\u{FE0F}", CountrySeason::getSeasonEmoji('AU', $january));
+
+        $this->assertSame(
+            CountrySeason::getSeasonEmoji('au', $july),
+            CountrySeason::getSeasonEmoji('AU', $july),
+            '大小写不敏感'
+        );
+    }
+
+    public function testGetSeasonEmojiRejectsInvalidCode(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        CountrySeason::getSeasonEmoji('XX1');
+    }
+
+    public function testGetSupportedLocalesIsStableAcrossCalls(): void
+    {
+        $this->assertSame(CountrySeason::getSupportedLocales(), CountrySeason::getSupportedLocales());
+    }
+
     public function testAllSouthernCountriesAreValid(): void
     {
         // Every listed southern hemisphere code should pass validation

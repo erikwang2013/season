@@ -12,8 +12,10 @@ use DateTimeInterface;
  * @method string getSeason(string $countryCode, ?DateTimeInterface $date = null)
  * @method string getSeasonNameZh(string $countryCode, ?DateTimeInterface $date = null)
  * @method string getCountryFlagEmoji(string $countryCode)
+ * @method string getSeasonEmoji(string $countryCode, ?DateTimeInterface $date = null)
  * @method string getSeasonNameLocalized(string $countryCode, string $locale, ?DateTimeInterface $date = null)
  * @method string|null getSeasonForDefault(?DateTimeInterface $date = null)
+ * @method string getMascot(?DateTimeInterface $date = null)
  * @method string getHemisphere(string $countryCode)
  * @method bool isValidCode(string $countryCode)
  * @method string[] getSupportedLocales()
@@ -69,6 +71,19 @@ class SeasonService
     }
 
     /**
+     * Get the emoji for a country's current season.
+     *
+     * @param string $countryCode ISO 3166-1 alpha-2 two-letter code (case-insensitive)
+     * @param DateTimeInterface|null $date Defaults to current time
+     * @return string 🌸 | ☀️ | 🍁 | ❄️
+     * @throws \InvalidArgumentException when the country code is invalid
+     */
+    public function getSeasonEmoji(string $countryCode, ?DateTimeInterface $date = null): string
+    {
+        return CountrySeason::getSeasonEmoji($countryCode, $date);
+    }
+
+    /**
      * Get a localized season name by BCP 47 locale.
      *
      * @param string $countryCode ISO 3166-1 alpha-2 two-letter code (case-insensitive)
@@ -98,6 +113,24 @@ class SeasonService
             return null;
         }
         return CountrySeason::getSeason($this->defaultCountryCode, $date);
+    }
+
+    /**
+     * Get the mascot SVG themed for the configured default country.
+     *
+     * Returns the neutral mascot when no default country code is configured,
+     * mirroring getSeasonForDefault().
+     *
+     * @param DateTimeInterface|null $date Defaults to current time
+     * @throws \InvalidArgumentException when the default country code is invalid
+     */
+    public function getMascot(?DateTimeInterface $date = null): string
+    {
+        if ($this->defaultCountryCode === null || $this->defaultCountryCode === '') {
+            return Mascot::svg();
+        }
+
+        return Mascot::forCountry($this->defaultCountryCode, $date);
     }
 
     /**

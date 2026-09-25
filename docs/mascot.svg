@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 320" width="300" height="320" role="img" aria-labelledby="seasony-title seasony-desc">
+  <title id="seasony-title">season 项目吉祥物：Seasony（季灵）</title>
+  <desc id="seasony-desc">一颗圆滚滚的地球精灵：左上半球是春天的新绿，右下半球是秋天的暖橙，头顶一株嫩芽，四周环绕春夏秋冬四枚徽记。Mascot::forCountry() 会把名称替换成对应国家的季节标注。</desc>
+
+  <!-- palette token: #5FBF6A = 嫩芽主色（该色号在模板中只用于嫩芽）；Mascot::forCountry() 会按季节替换它 -->
+  <defs>
+    <linearGradient id="g-spring" x1="0" y1="0" x2="0.5" y2="1">
+      <stop offset="0" stop-color="#A8E7BC"/>
+      <stop offset="1" stop-color="#62C46D"/>
+    </linearGradient>
+    <linearGradient id="g-autumn" x1="1" y1="1" x2="0.1" y2="0.1">
+      <stop offset="0" stop-color="#EE8A44"/>
+      <stop offset="1" stop-color="#F3B96C"/>
+    </linearGradient>
+    <radialGradient id="g-gloss" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="clip-body">
+      <circle cx="150" cy="134" r="76"/>
+    </clipPath>
+    <g id="flake-arm" fill="none">
+      <line x1="0" y1="0" x2="0" y2="-20"/>
+      <path d="M0 -13.5 L 5 -18.5 M 0 -13.5 L -5 -18.5"/>
+    </g>
+  </defs>
+
+  <rect x="0" y="0" width="300" height="320" rx="28" fill="#F7FAF9"/>
+
+  <!-- 四季徽记 -->
+  <g id="emblem-spring" transform="translate(46 54)">
+    <g fill="#FF9FB2">
+      <circle cx="0" cy="-13" r="8.5"/>
+      <circle cx="12.4" cy="-4" r="8.5"/>
+      <circle cx="7.6" cy="10.5" r="8.5"/>
+      <circle cx="-7.6" cy="10.5" r="8.5"/>
+      <circle cx="-12.4" cy="-4" r="8.5"/>
+    </g>
+    <circle cx="0" cy="0" r="4.6" fill="#FFC93F"/>
+  </g>
+
+  <g id="emblem-summer" transform="translate(254 54)">
+    <g stroke="#F0B028" stroke-width="3.4" stroke-linecap="round">
+      <line x1="0" y1="-22" x2="0" y2="-14"/>
+      <line x1="0" y1="14" x2="0" y2="22"/>
+      <line x1="-22" y1="0" x2="-14" y2="0"/>
+      <line x1="14" y1="0" x2="22" y2="0"/>
+      <line x1="-15.6" y1="-15.6" x2="-9.9" y2="-9.9"/>
+      <line x1="9.9" y1="9.9" x2="15.6" y2="15.6"/>
+      <line x1="15.6" y1="-15.6" x2="9.9" y2="-9.9"/>
+      <line x1="-9.9" y1="9.9" x2="-15.6" y2="15.6"/>
+    </g>
+    <circle cx="0" cy="0" r="12" fill="#FFC74D"/>
+  </g>
+
+  <g id="emblem-autumn" transform="translate(254 214) rotate(-28)">
+    <path d="M0 -22 C 15 -14 19 4 0 22 C -19 4 -15 -14 0 -22 Z" fill="#DD6535"/>
+    <path d="M0 -19 L 0 18" stroke="#FFF1E3" stroke-width="2" stroke-linecap="round" opacity=".85"/>
+    <path d="M0 -6 L 8 -1 M 0 3 L 8 8 M 0 -6 L -8 -1 M 0 3 L -8 8" stroke="#FFF1E3" stroke-width="1.5" stroke-linecap="round" opacity=".6"/>
+  </g>
+
+  <g id="emblem-winter" transform="translate(46 214)" stroke="#4C9FE0" stroke-width="3" stroke-linecap="round">
+    <use href="#flake-arm"/>
+    <use href="#flake-arm" transform="rotate(60)"/>
+    <use href="#flake-arm" transform="rotate(120)"/>
+    <use href="#flake-arm" transform="rotate(180)"/>
+    <use href="#flake-arm" transform="rotate(240)"/>
+    <use href="#flake-arm" transform="rotate(300)"/>
+  </g>
+
+  <!-- 头顶嫩芽 -->
+  <path d="M150 60 C 150 46 150 40 150 32" fill="none" stroke="#5FBF6A" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M150 42 C 136 44 127 35 129 22 C 141 24 149 31 150 42 Z" fill="#5FBF6A"/>
+  <path d="M150 48 C 164 50 173 41 171 28 C 159 30 151 37 150 48 Z" fill="#5FBF6A" opacity=".82"/>
+
+  <!-- 身体：左上半球春、右下半球秋 -->
+  <ellipse cx="150" cy="230" rx="58" ry="9" fill="#22313A" opacity=".07"/>
+  <circle cx="150" cy="134" r="76" fill="url(#g-spring)"/>
+  <g clip-path="url(#clip-body)">
+    <circle cx="206" cy="188" r="112" fill="url(#g-autumn)"/>
+  </g>
+  <circle cx="150" cy="134" r="76" fill="none" stroke="#22313A" stroke-opacity=".14" stroke-width="2"/>
+  <ellipse cx="124" cy="92" rx="34" ry="26" fill="url(#g-gloss)" transform="rotate(-24 124 92)"/>
+
+  <!-- 表情 -->
+  <g fill="#22313A">
+    <circle cx="126" cy="124" r="7"/>
+    <circle cx="174" cy="124" r="7"/>
+  </g>
+  <g fill="#FFFFFF">
+    <circle cx="128.6" cy="121" r="2.4"/>
+    <circle cx="176.6" cy="121" r="2.4"/>
+  </g>
+  <g fill="#FF7A90" opacity=".35">
+    <ellipse cx="108" cy="140" rx="10" ry="6"/>
+    <ellipse cx="192" cy="140" rx="10" ry="6"/>
+  </g>
+  <path d="M139 142 Q150 152 161 142" fill="none" stroke="#22313A" stroke-width="3.4" stroke-linecap="round"/>
+
+  <!-- 标注：Mascot::forCountry() 会把它替换为「国旗 + 季节」 -->
+  <text x="150" y="282" text-anchor="middle" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Source Han Sans SC, sans-serif" font-size="19" font-weight="600" fill="#22313A" letter-spacing="0.5">Seasony · 季灵</text>
+  <text x="150" y="304" text-anchor="middle" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Source Han Sans SC, sans-serif" font-size="12" fill="#6B7C86" letter-spacing="0.6">ISO 3166-1 · 南北半球 · 四季</text>
+</svg>

@@ -2,16 +2,82 @@
 
 **Language:** [English](README.md) · [简体中文](README.zh-CN.md)
 
+<p align="center"><img src="./docs/mascot.svg" alt="Seasony, the season mascot" width="200" /></p>
+
+**Seasony** is the project mascot: a little globe whose left half is spring and right half is autumn — exactly what this library does, since the same month is a different season in each hemisphere. It ships as an API too (`Mascot::forCountry()`, see below), recolored and captioned for any country’s current season.
+
 PHP library / extension that resolves the current **season** from an **ISO 3166-1 alpha-2** country code. Use it as a plain Composer package, or integrate with **Laravel 7–11**, **ThinkPHP 6 / 8**, **Hyperf 2 / 3**, and **webman**. Besides English season keys (`spring`, etc.) and Chinese names, it provides **flag emoji**, **localized season names** by **BCP 47** locale, hemisphere detection, and optional date-based calculation.
 
 - **Northern hemisphere:** spring Mar–May, summer Jun–Aug, autumn Sep–Nov, winter Dec / Jan / Feb  
 - **Southern hemisphere:** autumn Mar–May, winter Jun–Aug, spring Sep–Nov, summer Dec / Jan / Feb  
+
+## Project structure
+
+```text
+season/
+├── src/
+│   ├── CountrySeason.php      Core: season / hemisphere / flag emoji / localized names (static API)
+│   ├── SeasonService.php      Container-friendly service: default country code + core API
+│   ├── LocaleData.php         Built-in localized season names (NAMES + OVERRIDES)
+│   ├── Mascot.php             Seasony mascot: SVG output, themed by season
+│   ├── helpers.php            6 global helpers (season / Chinese / flag / emoji / locale / mascot)
+│   ├── bootstrap.php          Native PHP (no Composer) bootstrap: version check + SPL autoload + helpers
+│   ├── Install.php            webman plugin install / uninstall
+│   ├── Laravel/               CountrySeasonServiceProvider (auto-discovery, publishable config)
+│   ├── ThinkPHP/              Service (discovered by the think extension mechanism)
+│   ├── Hyperf/                ConfigProvider (container binding, publishable config)
+│   └── config/plugin/erikwang2013/season/app.php   webman plugin defaults
+├── config/country_season.php  default_country_code (shared by Laravel / ThinkPHP / Hyperf)
+├── docs/                      Mascot and diagrams (mascot / architecture / function / lifecycle .svg)
+├── tests/                     PHPUnit suite (framework stubs under tests/Stubs)
+└── composer.json              PSR-4 + files autoload, Laravel / ThinkPHP / Hyperf declarations
+```
+
+## Architecture
+
+<img src="./docs/architecture.svg" alt="season architecture" width="880" />
+
+Five layers, top to bottom — consumers (plain PHP / Laravel / ThinkPHP / Hyperf / webman) → integrations (framework service providers plus the webman installer) → service layer (`SeasonService` holding the default country code) → core (`CountrySeason` and `helpers.php`) → data (southern-hemisphere table, month-to-season maps, `LocaleData`). Config sources and outputs sit in the right column.
+
+## Feature map
+
+<img src="./docs/function.svg" alt="season feature map" width="880" />
+
+One entry point (country code + optional date), eight pure-function capabilities: season key, Chinese name, flag emoji, localized name, hemisphere, code validation, configured default, and the season-themed mascot.
+
+## Lifecycle
+
+<img src="./docs/lifecycle.svg" alt="season call lifecycle" width="880" />
+
+The seven-step main path of a single `getSeason()` call: input → normalize → two-letter validation (throws `InvalidArgumentException` on failure) → hemisphere lookup (O(1)) → month → month-to-season map → season key, then optionally rendered as Chinese / localized / flag emoji / mascot. Pure in-memory lookups; no IO, no state changes.
 
 ## Installation
 
 ```bash
 composer require erikwang2013/season
 ```
+
+## Native PHP (no Composer, no framework)
+
+Drop the `src/` directory anywhere in your project (plus `docs/mascot.svg` if you want `country_season_mascot()`) and require the bootstrap file — no Composer, no framework:
+
+```php
+require '/path/to/season/src/bootstrap.php';   // version check + SPL autoload + global helpers
+
+echo country_season('CN');        // spring | summer | autumn | winter
+echo country_season_zh('AU');     // 春 | 夏 | 秋 | 冬
+echo country_season_flag('JP');   // 🇯🇵
+echo country_season_emoji('US');  // 🌸 | ☀️ | 🍁 | ❄️
+echo country_season_mascot('DE'); // mascot SVG themed for Germany's current season
+
+// classes work too (PSR-4 style autoloading)
+new \Erikwang2013\Season\SeasonService('CN');
+```
+
+- `bootstrap.php` does three things: check the PHP version (a clear error instead of a syntax error below 8.0), register an `Erikwang2013\Season\*` SPL autoloader, and load `helpers.php`.
+- **Requiring it twice is safe** — autoloaders can be registered repeatedly, and `helpers.php` is guarded by `require_once` plus `function_exists`.
+- Composer installs do not need it (`autoload files` already loads the helpers); mixing both paths is fine.
+- Requirements stay the same: **PHP >= 8.0** and **mbstring** (flag emoji uses `mb_chr`).
 
 ## webman plugin
 
@@ -83,6 +149,18 @@ $flag = CountrySeason::getCountryFlagEmoji('us');  // case-insensitive → 🇺�
 
 Invalid or non–two-letter codes throw `InvalidArgumentException` (same as `getSeason`, etc.).
 
+#### Season emoji
+
+Same hemisphere logic, one call for the season emoji (`🌸` spring / `☀️` summer / `🍁` autumn / `❄️` winter) — handy for lists, notifications and status chips:
+
+```php
+$emoji = CountrySeason::getSeasonEmoji('CN');   // northern hemisphere, current season
+$emoji = CountrySeason::getSeasonEmoji('AU');   // southern hemisphere: opposite season right now
+$emoji = CountrySeason::getSeasonEmoji('CN', new \DateTimeImmutable('2026-07-15'));  // ☀️
+```
+
+These are the same four emblems the mascot wears (blossom / sun / leaf / snowflake).
+
 #### Localized season names (BCP 47)
 
 `getSeasonNameLocalized` uses the **country code** for the season (including hemisphere) and the **locale** for the label:
@@ -115,8 +193,10 @@ country_season('JP');       // e.g. spring
 country_season_zh('AU');    // Chinese name, e.g. 秋
 
 country_season_flag('FR');  // 🇫🇷
+country_season_emoji('JP'); // 🌸 | ☀️ | 🍁 | ❄️
 country_season_locale('IT', 'it_IT');  // e.g. Primavera
 country_season_locale('KR', 'ko', $date);  // optional date
+country_season_mascot('DE');           // mascot SVG (see section 6)
 ```
 
 ### 3. Laravel / ThinkPHP / Hyperf — `SeasonService`
@@ -148,8 +228,10 @@ $seasonService = Container::get(SeasonService::class);
 $seasonService->getSeason('CN');
 $seasonService->getSeasonNameZh('AU');
 $seasonService->getCountryFlagEmoji('JP');
+$seasonService->getSeasonEmoji('JP');        // ☀️ etc.
 $seasonService->getSeasonNameLocalized('FR', 'fr_FR');
 $seasonService->getSeasonForDefault();
+$seasonService->getMascot();                 // mascot SVG themed by the default country
 $seasonService->getHemisphere('NZ');
 $seasonService->isValidCode('AU');          // true
 $seasonService->getSupportedLocales();       // ['ar', 'cs', 'da', ...]
@@ -166,6 +248,26 @@ return [
 ];
 ```
 
+### 6. Mascot — Seasony
+
+`Mascot` reads the packaged `docs/mascot.svg` and substitutes into it, returning an inline SVG string — no JS, no external image, no extra dependency:
+
+```php
+use Erikwang2013\Season\Mascot;
+
+echo Mascot::svg();                        // neutral version (the one on top of this README)
+echo Mascot::forCountry('CN');             // themed for China's current season
+echo Mascot::forCountry('AU');             // southern hemisphere: opposite season right now
+echo Mascot::forCountry('AU', new \DateTimeImmutable('2026-07-15'));  // 🇦🇺 冬 · Winter
+
+echo country_season_mascot('JP');          // global helper; null returns the neutral version
+```
+
+- Season accents: spring `#3FA96A`, summer `#E8A11C`, autumn `#D8602F`, winter `#3C8FD1` (applied to the sprout and the caption).
+- Output is a plain string — drop it into HTML / Blade / Twig / email templates; set a width yourself (e.g. `width="200"`).
+- Invalid country codes throw `InvalidArgumentException`, same as every other method.
+- Container users (Laravel / ThinkPHP / Hyperf / webman): `SeasonService::getMascot()` uses the configured default country, falling back to the neutral mascot when none is configured.
+
 ## Country codes
 
 - **ISO 3166-1 alpha-2** two-letter codes (e.g. CN, US, JP, AU).
@@ -178,12 +280,15 @@ return [
 | `CountrySeason::getSeason` / `country_season` | English season key |
 | `CountrySeason::getSeasonNameZh` / `country_season_zh` | Chinese season name |
 | `CountrySeason::getCountryFlagEmoji` / `country_season_flag` | Flag emoji |
+| `CountrySeason::getSeasonEmoji` / `country_season_emoji` | Season emoji (🌸☀️🍁❄️) |
 | `CountrySeason::getSeasonNameLocalized` / `country_season_locale` | Localized name |
 | `CountrySeason::getSupportedLocales` | Built-in locales |
 | `CountrySeason::getHemisphere` | north / south |
 | `SeasonService::getSeasonForDefault` | Uses configured default country |
+| `SeasonService::getMascot` | Mascot SVG themed by the default country |
 | `SeasonService::isValidCode` | Check code format |
 | `SeasonService::getSupportedLocales` | Built-in locales |
+| `Mascot::svg` / `Mascot::forCountry` / `country_season_mascot` | Mascot SVG (optionally season-themed) |
 
 ### Exceptions and validation
 
@@ -201,7 +306,7 @@ return [
 ## Testing
 
 ```bash
-composer test       # PHPUnit (46 tests)
+composer test       # PHPUnit (coverage reports are CI-only; add -- --no-coverage locally)
 composer analyse    # PHPStan (static analysis)
 ```
 
@@ -209,6 +314,7 @@ composer analyse    # PHPStan (static analysis)
 
 - PHP >= 8.0
 - **mbstring** extension (flag emoji uses `mb_chr`)
+- No Composer needed — `require src/bootstrap.php` (see "Native PHP" above)
 - Optional: `workerman/webman-framework`, `illuminate/support`, `topthink/framework`, `hyperf/framework`
 
 ## 开源不易，欢迎支持 / Support This Project

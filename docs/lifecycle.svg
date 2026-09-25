@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 580" width="960" height="580" role="img" aria-labelledby="lc-title lc-desc"
+     font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Source Han Sans SC, sans-serif">
+  <title id="lc-title">season 调用生命周期：从国家码到季节输出的完整链路</title>
+  <desc id="lc-desc">主线为：输入国家码与可选日期 → 标准化 trim 与大小写 → 两字母格式校验（失败抛 InvalidArgumentException）→ 半球判定（南半球代码表 O(1) 查表）→ 取月份 → 月份到季节映射 → 输出季节键。输出后分四条消费路径：中文名称、多语言名称（完整标签→语言码→en 回退）、国旗 Emoji、季节主题吉祥物。底部为可继承覆写的扩展点。</desc>
+
+  <defs>
+    <marker id="ar-l" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#8FA8A2"/>
+    </marker>
+    <marker id="ar-err" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#C2705F"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="960" height="580" rx="28" fill="#F7FAF9"/>
+  <text x="40" y="56" font-size="24" font-weight="700" fill="#22313A">生命周期 · Lifecycle</text>
+  <text x="40" y="82" font-size="13" fill="#6B7C86">一次 getSeason() 调用的完整链路 —— 全程纯内存查表：无网络、无数据库、无缓存、无可变全局状态。</text>
+
+  <!-- ── 主线 ── -->
+  <text x="40" y="118" font-size="11.5" font-weight="700" fill="#8FA8A2">主线 · Main path</text>
+  <g text-anchor="middle">
+    <rect x="42" y="130" width="108" height="84" rx="14" fill="#F4F8FF" stroke="#D8E6F8" stroke-width="1.5"/>
+    <text x="96" y="156" font-size="11.5" font-weight="700" fill="#245B86">输入</text>
+    <text x="96" y="178" font-size="9" fill="#5A7FA0">country_code</text>
+    <text x="96" y="194" font-size="9" fill="#5A7FA0">date? · locale?</text>
+
+    <rect x="170" y="130" width="108" height="84" rx="14" fill="#F4F8FF" stroke="#D8E6F8" stroke-width="1.5"/>
+    <text x="224" y="156" font-size="11.5" font-weight="700" fill="#245B86">标准化</text>
+    <text x="224" y="178" font-size="9" fill="#5A7FA0">trim + 大写</text>
+    <text x="224" y="194" font-size="9" fill="#5A7FA0">大小写不敏感</text>
+
+    <rect x="298" y="130" width="108" height="84" rx="14" fill="#EEF8F1" stroke="#CBE7D5" stroke-width="1.5"/>
+    <text x="352" y="156" font-size="11.5" font-weight="700" fill="#1F5B39">格式校验</text>
+    <text x="352" y="178" font-size="9" fill="#5E8A73">isValidCode()</text>
+    <text x="352" y="194" font-size="9" fill="#5E8A73">两字母 A–Z</text>
+
+    <rect x="426" y="130" width="108" height="84" rx="14" fill="#EEF8F1" stroke="#CBE7D5" stroke-width="1.5"/>
+    <text x="480" y="156" font-size="11.5" font-weight="700" fill="#1F5B39">半球判定</text>
+    <text x="480" y="178" font-size="9" fill="#5E8A73">getHemisphere()</text>
+    <text x="480" y="194" font-size="9" fill="#5E8A73">查表 · O(1)</text>
+
+    <rect x="554" y="130" width="108" height="84" rx="14" fill="#EEF8F1" stroke="#CBE7D5" stroke-width="1.5"/>
+    <text x="608" y="156" font-size="11.5" font-weight="700" fill="#1F5B39">取月份</text>
+    <text x="608" y="178" font-size="9" fill="#5E8A73">date ?? now</text>
+    <text x="608" y="194" font-size="9" fill="#5E8A73">format('n')</text>
+
+    <rect x="682" y="130" width="108" height="84" rx="14" fill="#EEF8F1" stroke="#CBE7D5" stroke-width="1.5"/>
+    <text x="736" y="156" font-size="11.5" font-weight="700" fill="#1F5B39">月份→季节</text>
+    <text x="736" y="178" font-size="9" fill="#5E8A73">北 / 南两张表</text>
+    <text x="736" y="194" font-size="9" fill="#5E8A73">monthToSeason()</text>
+
+    <rect x="810" y="130" width="108" height="84" rx="14" fill="#FFF6EC" stroke="#F2DDC4" stroke-width="1.5"/>
+    <text x="864" y="156" font-size="11.5" font-weight="700" fill="#8A4B14">输出</text>
+    <text x="864" y="178" font-size="9" fill="#946B44">spring … winter</text>
+    <text x="864" y="194" font-size="9" fill="#946B44">季节键</text>
+  </g>
+
+  <g stroke="#8FA8A2" stroke-width="1.8" marker-end="url(#ar-l)">
+    <line x1="152" y1="172" x2="166" y2="172"/>
+    <line x1="280" y1="172" x2="294" y2="172"/>
+    <line x1="408" y1="172" x2="422" y2="172"/>
+    <line x1="536" y1="172" x2="550" y2="172"/>
+    <line x1="664" y1="172" x2="678" y2="172"/>
+    <line x1="792" y1="172" x2="806" y2="172"/>
+  </g>
+
+  <!-- ── 异常分支 ── -->
+  <line x1="352" y1="216" x2="352" y2="250" stroke="#C2705F" stroke-width="1.8" marker-end="url(#ar-err)"/>
+  <text x="360" y="238" font-size="9.5" fill="#C2705F">非两字母 / 空串</text>
+  <rect x="160" y="254" width="384" height="52" rx="14" fill="#FDECEA" stroke="#F3C9C2" stroke-width="1.5"/>
+  <text x="176" y="276" font-size="11.5" font-weight="700" fill="#A33124">抛 InvalidArgumentException</text>
+  <text x="176" y="294" font-size="9.5" fill="#B4553F">getSeason / getHemisphere / getCountryFlagEmoji / getSeasonNameZh 均先校验</text>
+
+  <!-- ── 消费路径 ── -->
+  <text x="920" y="322" font-size="11.5" font-weight="700" fill="#8FA8A2" text-anchor="end">输出去向 · Consumers</text>
+  <g stroke="#8FA8A2" stroke-width="1.8" fill="none" marker-end="url(#ar-l)">
+    <path d="M864 216 L864 330 L142 330 L142 346"/>
+    <path d="M368 330 L368 346"/>
+    <path d="M594 330 L594 346"/>
+    <path d="M820 330 L820 346"/>
+  </g>
+
+  <g text-anchor="middle">
+    <rect x="42" y="350" width="200" height="84" rx="14" fill="#EEF8F1" stroke="#CBE7D5" stroke-width="1.5"/>
+    <text x="142" y="376" font-size="11.5" font-weight="700" fill="#1F5B39">中文名称</text>
+    <text x="142" y="398" font-size="9.5" fill="#5E8A73">getSeasonNameZh()</text>
+    <text x="142" y="418" font-size="9.5" fill="#5E8A73">春 / 夏 / 秋 / 冬</text>
+
+    <rect x="268" y="350" width="200" height="84" rx="14" fill="#FFF6EC" stroke="#F2DDC4" stroke-width="1.5"/>
+    <text x="368" y="376" font-size="11.5" font-weight="700" fill="#8A4B14">多语言名称</text>
+    <text x="368" y="398" font-size="9.5" fill="#946B44">resolveSeasonNamesForLocale()</text>
+    <text x="368" y="418" font-size="9.5" fill="#946B44">完整标签 → 语言码 → en 回退</text>
+
+    <rect x="494" y="350" width="200" height="84" rx="14" fill="#EEF5FC" stroke="#D3E5F5" stroke-width="1.5"/>
+    <text x="594" y="376" font-size="11.5" font-weight="700" fill="#245B86">表情 Emoji</text>
+    <text x="594" y="398" font-size="9.5" fill="#5A7FA0">getCountryFlagEmoji() → 🇨🇳</text>
+    <text x="594" y="418" font-size="9.5" fill="#5A7FA0">getSeasonEmoji() → ❄️</text>
+
+    <rect x="720" y="350" width="200" height="84" rx="14" fill="#FDF0F5" stroke="#F2D7E3" stroke-width="1.5"/>
+    <text x="820" y="376" font-size="11.5" font-weight="700" fill="#8A2B52">吉祥物 Mascot</text>
+    <text x="820" y="398" font-size="9.5" fill="#9C6280">Mascot::forCountry()</text>
+    <text x="820" y="418" font-size="9.5" fill="#9C6280">季节配色 + 季度标注 SVG</text>
+  </g>
+
+  <!-- ── 扩展点 ── -->
+  <rect x="40" y="456" width="880" height="80" rx="16" fill="#FFFFFF" stroke="#E1EBE8" stroke-width="1.5"/>
+  <text x="56" y="484" font-size="12.5" font-weight="700" fill="#22313A">扩展点 · Extension points</text>
+  <text x="56" y="506" font-size="10.5" fill="#5A6B75">两种季节名解析方法为 protected static，可继承覆写而无需 fork 源码；locale 数据集中在 LocaleData（NAMES 语言级 + OVERRIDES 区域级，如 en_US 覆盖为 Fall，en 本身即 Autumn）。</text>
+  <text x="56" y="524" font-size="10.5" fill="#8FA8A2">新增语言只需补一条常量；新增南半球国家/地区只需在 SOUTH_HEMISPHERE_CODES 增加一个键值对。</text>
+
+  <text x="40" y="566" font-size="11" fill="#8FA8A2">链路长度固定：7 步主线全部为 O(1) 查表，单次调用不产生任何 IO 与状态变更，可安全用于高频请求路径。</text>
+</svg>

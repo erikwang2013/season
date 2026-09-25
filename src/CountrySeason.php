@@ -22,6 +22,14 @@ class CountrySeason
     public const HEMISPHERE_NORTH = 'north';
     public const HEMISPHERE_SOUTH = 'south';
 
+    /** Emoji per season key, hemisphere-neutral: the season key already carries the hemisphere. */
+    private const SEASON_EMOJI = [
+        self::SEASON_SPRING => '🌸',
+        self::SEASON_SUMMER => "\u{2600}\u{FE0F}",
+        self::SEASON_AUTUMN => '🍁',
+        self::SEASON_WINTER => "\u{2744}\u{FE0F}",
+    ];
+
     /**
      * ISO 3166-1 alpha-2 codes for countries/territories in the southern hemisphere (keyed for O(1) lookup).
      *
@@ -71,8 +79,20 @@ class CountrySeason
     {
         $code = self::normalizeCountryCode($countryCode);
         $month = (int) ($date ?? new \DateTimeImmutable())->format('n');
-        $hemisphere = self::getHemisphere($code);
-        return self::monthToSeason($month, $hemisphere);
+        return self::monthToSeason($month, self::hemisphereOf($code));
+    }
+
+    /**
+     * Get the emoji for a country's current season.
+     *
+     * @param string $countryCode ISO 3166-1 alpha-2 two-letter code (case-insensitive)
+     * @param DateTimeInterface|null $date Defaults to current time
+     * @return string 🌸 | ☀️ | 🍁 | ❄️
+     * @throws \InvalidArgumentException when the country code is invalid
+     */
+    public static function getSeasonEmoji(string $countryCode, ?DateTimeInterface $date = null): string
+    {
+        return self::SEASON_EMOJI[self::getSeason($countryCode, $date)];
     }
 
     /**
@@ -98,10 +118,7 @@ class CountrySeason
      */
     public static function getHemisphere(string $countryCode): string
     {
-        $code = self::normalizeCountryCode($countryCode);
-        return isset(self::SOUTH_HEMISPHERE_CODES[$code])
-            ? self::HEMISPHERE_SOUTH
-            : self::HEMISPHERE_NORTH;
+        return self::hemisphereOf(self::normalizeCountryCode($countryCode));
     }
 
     /**
@@ -159,11 +176,18 @@ class CountrySeason
      */
     public static function getSupportedLocales(): array
     {
-        $langKeys = \array_keys(LocaleData::NAMES);
-        $overrideKeys = \array_keys(LocaleData::OVERRIDES);
-        $keys = \array_unique(\array_merge($langKeys, $overrideKeys));
-        \sort($keys, \SORT_STRING);
-        return $keys;
+        static $locales = null;
+
+        if ($locales === null) {
+            $keys = \array_unique(\array_merge(
+                \array_keys(LocaleData::NAMES),
+                \array_keys(LocaleData::OVERRIDES)
+            ));
+            \sort($keys, \SORT_STRING);
+            $locales = $keys;
+        }
+
+        return $locales;
     }
 
     /**
@@ -181,6 +205,16 @@ class CountrySeason
             );
         }
         return $code;
+    }
+
+    /**
+     * Hemisphere lookup for an already normalized (uppercase, validated) code.
+     */
+    private static function hemisphereOf(string $code): string
+    {
+        return isset(self::SOUTH_HEMISPHERE_CODES[$code])
+            ? self::HEMISPHERE_SOUTH
+            : self::HEMISPHERE_NORTH;
     }
 
     private static function monthToSeason(int $month, string $hemisphere): string

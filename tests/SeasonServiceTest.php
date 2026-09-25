@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Erikwang2013\Season\Tests;
 
+use Erikwang2013\Season\Mascot;
 use Erikwang2013\Season\SeasonService;
 use PHPUnit\Framework\TestCase;
 
@@ -116,6 +117,28 @@ class SeasonServiceTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         new SeasonService('123');
+    }
+
+    // ── Emoji / mascot ──────────────────────────────────────────
+
+    public function testGetSeasonEmojiDelegatesToCore(): void
+    {
+        $july = new \DateTimeImmutable('2026-07-15');
+        $service = new SeasonService('CN');
+
+        $this->assertSame("\u{2600}\u{FE0F}", $service->getSeasonEmoji('CN', $july));
+        $this->assertSame("\u{2744}\u{FE0F}", $service->getSeasonEmoji('AU', $july));
+    }
+
+    public function testGetMascotUsesDefaultCountry(): void
+    {
+        $july = new \DateTimeImmutable('2026-07-15');
+
+        $themed = (new SeasonService('CN'))->getMascot($july);
+        $this->assertStringContainsString('🇨🇳 夏 · Summer', $themed);
+
+        $neutral = (new SeasonService())->getMascot($july);
+        $this->assertSame(Mascot::svg(), $neutral, '未配置默认国家时返回中性吉祥物');
     }
 
     // ── Exception propagation ───────────────────────────────────
