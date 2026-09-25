@@ -83,7 +83,8 @@ class CountrySeasonTest extends TestCase
 
     public function testGetHemisphereSouthern(): void
     {
-        $southernCountries = ['AU', 'AR', 'BR', 'NZ', 'ZA', 'CL', 'UY', 'PY', 'PE', 'CD', 'TL', 'AS'];
+        $southernCountries = ['AU', 'AR', 'BR', 'NZ', 'ZA', 'CL', 'UY', 'PY', 'PE', 'CD', 'TL', 'AS',
+            'ID', 'EC', 'KE', 'CG'];
         foreach ($southernCountries as $code) {
             $this->assertSame('south', CountrySeason::getHemisphere($code), "Failed for $code");
         }
@@ -92,8 +93,9 @@ class CountrySeasonTest extends TestCase
     public function testGetHemisphereNorthernNearEquator(): void
     {
         // Guyana and Suriname are in the northern hemisphere despite being in South America;
-        // Kiribati (KI) and US Minor Outlying Islands (UM) are majority-north despite straddling the equator
-        $northernCountries = ['GY', 'SR', 'VE', 'CO', 'EC', 'KI', 'UM'];
+        // Kiribati (KI) and US Minor Outlying Islands (UM) are majority-north despite straddling
+        // the equator, as are Gabon (GA, Libreville ~0.4°N) and Uganda (UG).
+        $northernCountries = ['GY', 'SR', 'VE', 'CO', 'KI', 'UM', 'GA', 'UG', 'GQ', 'ST', 'SO'];
         foreach ($northernCountries as $code) {
             $this->assertSame('north', CountrySeason::getHemisphere($code), "Failed for $code");
         }
@@ -107,6 +109,14 @@ class CountrySeasonTest extends TestCase
         // Regression: KI (Kiribati) and UM (US Minor Outlying Islands) are northern hemisphere
         $this->assertSame('north', CountrySeason::getHemisphere('KI'));
         $this->assertSame('north', CountrySeason::getHemisphere('UM'));
+        // Regression: 赤道国家按人口多数判定 —— ID/KE/CG/EC 是南半球（首都与人口重心均在赤道以南）
+        $this->assertSame('south', CountrySeason::getHemisphere('ID'));  // 雅加达 6.2°S，爪哇岛 1.5 亿人
+        $this->assertSame('south', CountrySeason::getHemisphere('KE'));  // 内罗毕 1.3°S，北部干旱人稀
+        $this->assertSame('south', CountrySeason::getHemisphere('CG'));  // 布拉柴维尔 4.3°S
+        $this->assertSame('south', CountrySeason::getHemisphere('EC'));  // 基多 0.2°S，瓜亚基尔 2.2°S
+        // 同一时刻南北半球季节相反
+        $this->assertSame('winter', CountrySeason::getSeason('ID', new \DateTimeImmutable('2026-07-15')));
+        $this->assertSame('summer', CountrySeason::getSeason('ID', new \DateTimeImmutable('2026-01-15')));
     }
 
     // ── isValidCode ─────────────────────────────────────────────
@@ -317,7 +327,8 @@ class CountrySeasonTest extends TestCase
             'MG', 'MW', 'MU', 'YT', 'NR', 'NC', 'NZ', 'NU', 'NF', 'PG',
             'PY', 'PE', 'PN', 'RE', 'RW', 'SH', 'WS', 'SC', 'SB', 'ZA',
             'SZ', 'TL', 'TO', 'TV', 'UY', 'VU', 'WF', 'ZM', 'ZW',
-            'CX', 'TK', 'PF', 'CD', 'MZ', 'NA', 'TZ', 'AO', 'KM'];
+            'CX', 'TK', 'PF', 'CD', 'MZ', 'NA', 'TZ', 'AO', 'KM',
+            'ID', 'EC', 'KE', 'CG'];
         foreach ($southern as $code) {
             $this->assertSame('south', CountrySeason::getHemisphere($code), "Failed for $code");
         }

@@ -271,7 +271,9 @@ echo country_season_mascot('JP');          // global helper; null returns the ne
 ## Country codes
 
 - **ISO 3166-1 alpha-2** two-letter codes (e.g. CN, US, JP, AU).
-- Southern countries (AU, AR, NZ, BR, etc.) are mapped; others are treated as northern hemisphere.
+- Southern countries and territories are mapped (AU, AR, NZ, BR, CL, …); everything else is treated as northern hemisphere.
+- **Equator-straddling countries are decided by where the population majority lives**, not by land area: Indonesia (Jakarta 6.2°S, Java holds 150M), Kenya (Nairobi 1.3°S; the arid north is sparsely populated), Congo-Brazzaville (Brazzaville 4.3°S) and Ecuador (Quito 0.2°S) count as southern; Gabon (Libreville 0.4°N), Uganda, Equatorial Guinea, São Tomé and Príncipe, Somalia and Kiribati (Tarawa 1.3°N) stay northern.
+- The rule and its regression tests live in `tests/CountrySeasonTest.php`; adding or removing a country is one key/value pair in `SOUTH_HEMISPHERE_CODES`.
 
 ## API summary
 

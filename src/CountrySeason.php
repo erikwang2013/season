@@ -31,10 +31,12 @@ class CountrySeason
     ];
 
     /**
-     * ISO 3166-1 alpha-2 codes for countries/territories in the southern hemisphere (keyed for O(1) lookup).
+     * ISO 3166-1 alpha-2 codes for countries/territories whose population majority lies south of
+     * the equator (keyed for O(1) lookup). Codes not listed here use northern season mapping.
      *
-     * Codes not listed here (including equator-bordering countries and non-sovereign territories)
-     * default to northern hemisphere season mapping.
+     * Equator-straddling countries are decided by where most people live, not by land area:
+     * ID / EC / KE / CG / CD / BR / PE / TZ are in, while GA (Libreville ~0.4°N), UG, GQ, ST, SO,
+     * MV, KE-north-majority neighbours and KI (Tarawa ~1.3°N) stay out.
      */
     private const SOUTH_HEMISPHERE_CODES = [
         'AQ' => true, 'AR' => true, 'AS' => true, 'AU' => true, 'BV' => true,
@@ -43,12 +45,12 @@ class CountrySeason
         'GS' => true, 'HM' => true, 'LS' => true,
         'MG' => true, 'MW' => true, 'MU' => true, 'YT' => true, 'NR' => true,
         'NC' => true, 'NZ' => true, 'NU' => true, 'NF' => true, 'PG' => true,
-        'PY' => true, 'PE' => true, 'PN' => true, 'RE' => true, 'RW' => true,
+        'PY' => true, 'PE' => true, 'EC' => true, 'PN' => true, 'RE' => true, 'RW' => true,
         'SH' => true, 'WS' => true, 'SC' => true, 'SB' => true, 'ZA' => true,
-        'SZ' => true, 'TL' => true, 'TO' => true, 'TV' => true,
+        'SZ' => true, 'TL' => true, 'ID' => true, 'TO' => true, 'TV' => true,
         'UY' => true, 'VU' => true, 'WF' => true, 'ZM' => true, 'ZW' => true,
-        'CX' => true, 'TK' => true, 'PF' => true, 'CD' => true, 'MZ' => true,
-        'NA' => true, 'TZ' => true, 'AO' => true, 'KM' => true,
+        'CX' => true, 'TK' => true, 'PF' => true, 'CD' => true, 'CG' => true,
+        'MZ' => true, 'NA' => true, 'TZ' => true, 'KE' => true, 'AO' => true, 'KM' => true,
     ];
 
     private const MONTH_TO_SEASON_NORTH = [
