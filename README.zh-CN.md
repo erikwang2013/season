@@ -6,7 +6,7 @@
 
 **Seasony · 季灵** 是本项目的吉祥物：一只左半球是春天、右半球是秋天的地球精灵 —— 正好是这个小库在做的事：同一个月份，南北半球季节相反。它也是一个 API（`Mascot::forCountry()`，见下文），能按任意国家的当前季节换色并标注。
 
-根据 **ISO 3166-1 alpha-2** 国家简码获取当前季节的 PHP 扩展，可作为普通 Composer 库使用，并可选集成 **Laravel 7–11**、**ThinkPHP 6 / 8**、**Hyperf 2 / 3** 与 **webman** 插件。除英文季节键名（`spring` 等）与中文名称外，还提供 **国旗 Emoji**、按 **BCP 47** 语言区域返回的 **多语言季节名称**，以及半球判断、指定日期计算等。
+根据 **ISO 3166-1 alpha-2** 国家简码获取当前季节的 PHP 扩展，可作为普通 Composer 库使用，并可选集成 **Laravel 7–11**、**ThinkPHP 6 / 8**、**Hyperf 2 / 3**、**Yii 2**、**Yii 3** 与 **webman** 插件。除英文季节键名（`spring` 等）与中文名称外，还提供 **国旗 Emoji**、按 **BCP 47** 语言区域返回的 **多语言季节名称**，以及半球判断、指定日期计算等。
 
 - 北半球：春 3–5，夏 6–8，秋 9–11，冬 12/1/2  
 - 南半球：秋 3–5，冬 6–8，春 9–11，夏 12/1/2  
@@ -26,18 +26,20 @@ season/
 │   ├── Laravel/               CountrySeasonServiceProvider（自动发现、可发布配置）
 │   ├── ThinkPHP/              Service（think 扩展机制自动发现）
 │   ├── Hyperf/                ConfigProvider（容器绑定、可发布配置）
+│   ├── Yii2/                  Bootstrap（把 SeasonService 绑定进 Yii::$container）
 │   └── config/plugin/erikwang2013/season/app.php   webman 插件默认配置
-├── config/country_season.php  default_country_code（Laravel / ThinkPHP / Hyperf 共用）
+├── config/country_season.php  default_country_code（Laravel / ThinkPHP / Hyperf / Yii 2 共用）
+├── config/params.php, di.php  Yii 3 config-plugin（默认参数 + 容器绑定）
 ├── docs/                      吉祥物与架构图（mascot / architecture / function / lifecycle .svg）
 ├── tests/                     PHPUnit 用例（tests/Stubs 下为框架桩）
-└── composer.json              PSR-4 + files 自动加载，Laravel / ThinkPHP / Hyperf 扩展声明
+└── composer.json              PSR-4 + files 自动加载，Laravel / ThinkPHP / Hyperf / Yii 扩展声明
 ```
 
 ## 架构设计
 
 <img src="./docs/architecture.svg" alt="season 架构设计" width="880" />
 
-右侧为配置与输出，左侧五层自上而下：使用方（原生 PHP / Laravel / ThinkPHP / Hyperf / webman）→ 集成层（各框架的服务提供者与 webman 安装器）→ 服务层（`SeasonService` 持有默认国家码）→ 核心层（`CountrySeason` 与 `helpers.php`）→ 数据层（南半球代码表、月份到季节映射、`LocaleData`）。
+右侧为配置与输出，左侧五层自上而下：使用方（原生 PHP / Laravel / ThinkPHP / Hyperf / Yii 2 / Yii 3 / webman）→ 集成层（各框架的服务提供者、Yii 3 的 config-plugin 配置文件与 webman 安装器）→ 服务层（`SeasonService` 持有默认国家码）→ 核心层（`CountrySeason` 与 `helpers.php`）→ 数据层（南半球代码表、月份到季节映射、`LocaleData`）。
 
 ## 功能设计
 
@@ -117,6 +119,43 @@ php bin/hyperf.php vendor:publish erikwang2013/season
 ```
 
 生成 `config/autoload/country_season.php` 后按需修改；未发布时仍使用内置默认值 **`CN`**（可通过环境变量 **`COUNTRY_SEASON_DEFAULT`** 等在自定义配置中覆盖）。
+
+## Yii 2
+
+普通库没有 Yii 2 的包自动发现，因此在应用配置（`config/web.php` / `config/main.php`）中注册引导类 —— 用数组形式顺带传入默认国家码：
+
+```php
+'bootstrap' => [
+    ['class' => \Erikwang2013\Season\Yii2\Bootstrap::class, 'defaultCountryCode' => 'CN'],
+],
+```
+
+此后 **`SeasonService`** 已注册进 Yii 的 DI 容器：`Yii::$container->get(SeasonService::class)`、`Yii::createObject(SeasonService::class)`、以及构造器/属性注入 `SeasonService` 都能拿到实例。
+
+不写 `defaultCountryCode` 时，会回退到 `params`（与其他集成相同的配置键）：
+
+```php
+// config/params.php
+return [
+    // 带环境变量的版本在 vendor/erikwang2013/season/config/country_season.php
+    'country_season' => ['default_country_code' => 'CN'],
+];
+```
+
+## Yii 3
+
+无需注册任何东西：`composer.json` 已声明 **config-plugin**，`yiisoft/config` 会自动合并包内 `config/params.php` 与 `config/di.php`，并把 **`SeasonService`** 绑定进 PSR-11 容器（按类型注入即可，例如控制器构造函数）。
+
+在应用自己的参数中覆盖默认国家码：
+
+```php
+// config/params.php
+return [
+    'erikwang2013/season' => ['default_country_code' => 'AU'],
+];
+```
+
+合并后的参数路径为 **`erikwang2013/season.default_country_code`**（内置默认 `CN`，或环境变量 `COUNTRY_SEASON_DEFAULT`）；若项目缓存了合并计划，改动后执行 `composer yii-config-rebuild`。
 
 ## 使用方式
 
@@ -202,9 +241,9 @@ country_season_locale('KR', 'ko', $date);  // 可传日期
 country_season_mascot('DE');           // 吉祥物 SVG（见第 6 节）
 ```
 
-### 3. 在 Laravel / ThinkPHP / Hyperf 中使用 SeasonService
+### 3. 在 Laravel / ThinkPHP / Hyperf / Yii 中使用 SeasonService
 
-安装对应集成后，容器中的 **`SeasonService`** 已与框架配置绑定（键名 **`country_season.default_country_code`**，与包内 `config/country_season.php` 一致）。`getSeasonForDefault()` 使用上述默认国家码。
+安装对应集成后，容器中的 **`SeasonService`** 已与框架配置绑定：**`country_season.default_country_code`**（Laravel / ThinkPHP / Hyperf 与 Yii 2 的 `params`；Yii 3 为 **`erikwang2013/season.default_country_code`**），取值与包内 `config/country_season.php` 一致。`getSeasonForDefault()` 使用上述默认国家码。
 
 ### 4. 在 webman 中使用 SeasonService（安装插件后）
 
@@ -269,7 +308,7 @@ echo country_season_mascot('JP');          // 全局函数；传 null 得到中�
 - 季节主题色：春 `#3FA96A`、夏 `#E8A11C`、秋 `#D8602F`、冬 `#3C8FD1`（用于头顶嫩芽与底部标注）。
 - 输出为纯字符串，可写进 HTML / Blade / Twig / 邮件模板；用于页面时建议自行设宽度（如 `width="200"`）。
 - 无效国家码与其它方法一致：抛 `InvalidArgumentException`。
-- 容器场景（Laravel / ThinkPHP / Hyperf / webman）：`SeasonService::getMascot()` 用配置里的默认国家；未配置默认国家时返回中性版。
+- 容器场景（Laravel / ThinkPHP / Hyperf / Yii / webman）：`SeasonService::getMascot()` 用配置里的默认国家；未配置默认国家时返回中性版。
 
 ## 国家代码说明
 
@@ -320,7 +359,7 @@ composer analyse    # PHPStan 静态分析
 - PHP >= 8.0
 - 扩展 **mbstring**（旗帜 Emoji 依赖 `mb_chr`）
 - 无需 Composer：可直接 `require src/bootstrap.php`（见「原生 PHP」一节）
-- 可选：`workerman/webman-framework`（webman 插件）、`illuminate/support`（Laravel）、`topthink/framework`（ThinkPHP）、`hyperf/framework`（Hyperf）
+- 可选：`workerman/webman-framework`（webman 插件）、`illuminate/support`（Laravel）、`topthink/framework`（ThinkPHP）、`hyperf/framework`（Hyperf）、`yiisoft/yii2`（Yii 2）、`yiisoft/config`（Yii 3）
 
 ## 开源不易，欢迎支持
 

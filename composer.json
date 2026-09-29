@@ -1,9 +1,9 @@
 {
     "name": "erikwang2013/season",
-    "description": "PHP library / extension that resolves the current season from an ISO 3166-1 alpha-2 country code. Use it as a plain Composer package, or integrate with Laravel 7–11, ThinkPHP 6 / 8, Hyperf 2 / 3, and webman. Besides English season keys (spring, etc.) and Chinese names, it provides flag emoji, localized season names by BCP 47 locale, hemisphere detection, and optional date-based calculation.",
+    "description": "PHP library / extension that resolves the current season from an ISO 3166-1 alpha-2 country code. Use it as a plain Composer package, or integrate with Laravel 7–11, ThinkPHP 6 / 8, Hyperf 2 / 3, webman, Yii 2, and Yii 3. Besides English season keys (spring, etc.) and Chinese names, it provides flag emoji, localized season names by BCP 47 locale, hemisphere detection, and optional date-based calculation.",
     "type": "library",
     "license": "MIT",
-    "keywords": ["iso 3166-1", "country", "season", "webman", "laravel", "thinkphp", "hyperf", "php"],
+    "keywords": ["iso 3166-1", "country", "season", "webman", "laravel", "thinkphp", "hyperf", "yii2", "yii3", "yii", "php"],
     "authors": [
         {
             "name": "erik",
@@ -19,7 +19,9 @@
         "workerman/webman-framework": "用于在 webman 项目中作为插件使用",
         "illuminate/support": "Laravel 7–11 使用 Erikwang2013\\Season\\Laravel\\CountrySeasonServiceProvider 时需要",
         "topthink/framework": "ThinkPHP 6 / 8 使用 Erikwang2013\\Season\\ThinkPHP\\Service 时需要",
-        "hyperf/framework": "Hyperf 2 / 3 使用 Erikwang2013\\Season\\Hyperf\\ConfigProvider 时需要"
+        "hyperf/framework": "Hyperf 2 / 3 使用 Erikwang2013\\Season\\Hyperf\\ConfigProvider 时需要",
+        "yiisoft/yii2": "Yii2 使用 Erikwang2013\\Season\\Yii2\\Bootstrap 时需要",
+        "yiisoft/config": "Yii3 通过 config-plugin 自动合并 config/params.php 与 config/di.php 时需要"
     },
     "autoload": {
         "psr-4": {
@@ -56,6 +58,13 @@
         },
         "hyperf": {
             "config": "Erikwang2013\\Season\\Hyperf\\ConfigProvider"
+        },
+        "config-plugin": {
+            "params": "params.php",
+            "di": "di.php"
+        },
+        "config-plugin-options": {
+            "source-directory": "config"
         }
     },
     "require-dev": {

@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 620" width="960" height="620" role="img" aria-labelledby="fn-title fn-desc"
      font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Source Han Sans SC, sans-serif">
   <title id="fn-title">season 功能设计：输入、核心与八类能力</title>
-  <desc id="fn-desc">功能地图。左侧为输入（国家码、可选日期、可选 locale、配置默认国家码），中间为 CountrySeason 与 SeasonService 核心，右侧八张能力卡片分别是季节解析、中文名称、国旗 Emoji、多语言名称、半球判断、代码校验、默认国家与季节性吉祥物，底部为四种框架的集成能力。</desc>
+  <desc id="fn-desc">功能地图。左侧为输入（国家码、可选日期、可选 locale、配置默认国家码），中间为 CountrySeason 与 SeasonService 核心，右侧八张能力卡片分别是季节解析、中文名称、国旗 Emoji、多语言名称、半球判断、代码校验、默认国家与季节性吉祥物，底部为各框架的集成能力。</desc>
 
   <defs>
     <marker id="ar-f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
@@ -129,16 +129,18 @@
   <!-- ── 集成能力 ── -->
   <rect x="40" y="478" width="880" height="88" rx="16" fill="#FFFFFF" stroke="#E1EBE8" stroke-width="1.5"/>
   <text x="56" y="506" font-size="13" font-weight="700" fill="#22313A">集成能力 · Integrations</text>
-  <text x="270" y="506" font-size="11" fill="#8FA8A2">同一套 API，四种框架容器可选绑定（安装即用，不装也不影响纯 Composer 用法）</text>
+  <text x="270" y="506" font-size="11" fill="#8FA8A2">同一套 API，各类框架容器可选绑定（安装即用，不装也不影响纯 Composer 用法）</text>
   <g font-size="10.5" fill="#5A6B75" text-anchor="middle">
-    <rect x="56" y="518" width="196" height="32" rx="10" fill="#F4F8FF" stroke="#D8E6F8" stroke-width="1.2"/>
-    <text x="154" y="538" font-weight="600" fill="#245B86">Laravel｜ServiceProvider</text>
-    <rect x="266" y="518" width="196" height="32" rx="10" fill="#F4F8FF" stroke="#D8E6F8" stroke-width="1.2"/>
-    <text x="364" y="538" font-weight="600" fill="#245B86">ThinkPHP｜think\Service</text>
-    <rect x="476" y="518" width="196" height="32" rx="10" fill="#F4F8FF" stroke="#D8E6F8" stroke-width="1.2"/>
-    <text x="574" y="538" font-weight="600" fill="#245B86">Hyperf｜ConfigProvider</text>
-    <rect x="686" y="518" width="196" height="32" rx="10" fill="#F4F8FF" stroke="#D8E6F8" stroke-width="1.2"/>
-    <text x="784" y="538" font-weight="600" fill="#245B86">webman｜Install 插件</text>
+    <rect x="56" y="518" width="161" height="32" rx="10" fill="#F4F8FF" stroke="#D8E6F8" stroke-width="1.2"/>
+    <text x="136" y="538" font-weight="600" fill="#245B86">Laravel｜ServiceProvider</text>
+    <rect x="227" y="518" width="161" height="32" rx="10" fill="#F4F8FF" stroke="#D8E6F8" stroke-width="1.2"/>
+    <text x="307" y="538" font-weight="600" fill="#245B86">ThinkPHP｜think\Service</text>
+    <rect x="398" y="518" width="161" height="32" rx="10" fill="#F4F8FF" stroke="#D8E6F8" stroke-width="1.2"/>
+    <text x="478" y="538" font-weight="600" fill="#245B86">Hyperf｜ConfigProvider</text>
+    <rect x="569" y="518" width="161" height="32" rx="10" fill="#F4F8FF" stroke="#D8E6F8" stroke-width="1.2"/>
+    <text x="649" y="538" font-weight="600" fill="#245B86">Yii 2/3｜Bootstrap · di</text>
+    <rect x="740" y="518" width="161" height="32" rx="10" fill="#F4F8FF" stroke="#D8E6F8" stroke-width="1.2"/>
+    <text x="820" y="538" font-weight="600" fill="#245B86">webman｜Install 插件</text>
   </g>
 
   <text x="40" y="598" font-size="11" fill="#8FA8A2">示例输出随「当前日期 + 国家所在半球」变化：同一个 7 月，北半球是 summer，南半球是 winter。无效国家码统一抛 InvalidArgumentException。</text>

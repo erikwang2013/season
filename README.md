@@ -6,7 +6,7 @@
 
 **Seasony** is the project mascot: a little globe whose left half is spring and right half is autumn — exactly what this library does, since the same month is a different season in each hemisphere. It ships as an API too (`Mascot::forCountry()`, see below), recolored and captioned for any country’s current season.
 
-PHP library / extension that resolves the current **season** from an **ISO 3166-1 alpha-2** country code. Use it as a plain Composer package, or integrate with **Laravel 7–11**, **ThinkPHP 6 / 8**, **Hyperf 2 / 3**, and **webman**. Besides English season keys (`spring`, etc.) and Chinese names, it provides **flag emoji**, **localized season names** by **BCP 47** locale, hemisphere detection, and optional date-based calculation.
+PHP library / extension that resolves the current **season** from an **ISO 3166-1 alpha-2** country code. Use it as a plain Composer package, or integrate with **Laravel 7–11**, **ThinkPHP 6 / 8**, **Hyperf 2 / 3**, **Yii 2**, **Yii 3**, and **webman**. Besides English season keys (`spring`, etc.) and Chinese names, it provides **flag emoji**, **localized season names** by **BCP 47** locale, hemisphere detection, and optional date-based calculation.
 
 - **Northern hemisphere:** spring Mar–May, summer Jun–Aug, autumn Sep–Nov, winter Dec / Jan / Feb  
 - **Southern hemisphere:** autumn Mar–May, winter Jun–Aug, spring Sep–Nov, summer Dec / Jan / Feb  
@@ -26,18 +26,20 @@ season/
 │   ├── Laravel/               CountrySeasonServiceProvider (auto-discovery, publishable config)
 │   ├── ThinkPHP/              Service (discovered by the think extension mechanism)
 │   ├── Hyperf/                ConfigProvider (container binding, publishable config)
+│   ├── Yii2/                  Bootstrap (binds SeasonService in Yii::$container)
 │   └── config/plugin/erikwang2013/season/app.php   webman plugin defaults
-├── config/country_season.php  default_country_code (shared by Laravel / ThinkPHP / Hyperf)
+├── config/country_season.php  default_country_code (shared by Laravel / ThinkPHP / Hyperf / Yii 2)
+├── config/params.php, di.php  Yii 3 config-plugin (default param + container binding)
 ├── docs/                      Mascot and diagrams (mascot / architecture / function / lifecycle .svg)
 ├── tests/                     PHPUnit suite (framework stubs under tests/Stubs)
-└── composer.json              PSR-4 + files autoload, Laravel / ThinkPHP / Hyperf declarations
+└── composer.json              PSR-4 + files autoload, Laravel / ThinkPHP / Hyperf / Yii declarations
 ```
 
 ## Architecture
 
 <img src="./docs/architecture.svg" alt="season architecture" width="880" />
 
-Five layers, top to bottom — consumers (plain PHP / Laravel / ThinkPHP / Hyperf / webman) → integrations (framework service providers plus the webman installer) → service layer (`SeasonService` holding the default country code) → core (`CountrySeason` and `helpers.php`) → data (southern-hemisphere table, month-to-season maps, `LocaleData`). Config sources and outputs sit in the right column.
+Five layers, top to bottom — consumers (plain PHP / Laravel / ThinkPHP / Hyperf / Yii 2 / Yii 3 / webman) → integrations (framework service providers, the Yii 3 config-plugin files, plus the webman installer) → service layer (`SeasonService` holding the default country code) → core (`CountrySeason` and `helpers.php`) → data (southern-hemisphere table, month-to-season maps, `LocaleData`). Config sources and outputs sit in the right column.
 
 ## Feature map
 
@@ -116,6 +118,43 @@ php bin/hyperf.php vendor:publish erikwang2013/season
 ```
 
 After `config/autoload/country_season.php` exists, adjust as needed; otherwise built-in default **`CN`** applies (override via **`COUNTRY_SEASON_DEFAULT`** or custom config).
+
+## Yii 2
+
+Yii 2 has no package auto-discovery for regular libraries, so register the bootstrap class in your application config (`config/web.php` / `config/main.php`) — the array form is how you pass the default country code:
+
+```php
+'bootstrap' => [
+    ['class' => \Erikwang2013\Season\Yii2\Bootstrap::class, 'defaultCountryCode' => 'CN'],
+],
+```
+
+**`SeasonService`** is then registered in Yii's DI container — `Yii::$container->get(SeasonService::class)`, `Yii::createObject(SeasonService::class)`, and constructor/property injection of `SeasonService` all resolve it.
+
+Leave `defaultCountryCode` out and the class falls back to `params` (same key as the other integrations):
+
+```php
+// config/params.php
+return [
+    // the env-aware version ships at vendor/erikwang2013/season/config/country_season.php
+    'country_season' => ['default_country_code' => 'CN'],
+];
+```
+
+## Yii 3
+
+Nothing to register: `composer.json` ships a **config-plugin** declaration, so `yiisoft/config` merges the package's `config/params.php` and `config/di.php` automatically and **`SeasonService`** is bound in the PSR-11 container (inject it by type, e.g. in a controller constructor).
+
+Override the default country code in your own params:
+
+```php
+// config/params.php
+return [
+    'erikwang2013/season' => ['default_country_code' => 'AU'],
+];
+```
+
+The merged parameter is **`erikwang2013/season.default_country_code`** (built-in default `CN`, or `COUNTRY_SEASON_DEFAULT`); run `composer yii-config-rebuild` after changing it if your setup caches the merge plan.
 
 ## Usage
 
@@ -199,9 +238,9 @@ country_season_locale('KR', 'ko', $date);  // optional date
 country_season_mascot('DE');           // mascot SVG (see section 6)
 ```
 
-### 3. Laravel / ThinkPHP / Hyperf — `SeasonService`
+### 3. Laravel / ThinkPHP / Hyperf / Yii — `SeasonService`
 
-After integration, container **`SeasonService`** uses framework config (**`country_season.default_country_code`**, same as package `config/country_season.php`). `getSeasonForDefault()` uses that default country.
+After integration, container **`SeasonService`** is bound to the framework's config: **`country_season.default_country_code`** (Laravel / ThinkPHP / Hyperf, and Yii 2 `params`), or **`erikwang2013/season.default_country_code`** on Yii 3 — the same value the package's `config/country_season.php` provides. `getSeasonForDefault()` uses that default country.
 
 ### 4. webman — `SeasonService` (after plugin install)
 
@@ -266,7 +305,7 @@ echo country_season_mascot('JP');          // global helper; null returns the ne
 - Season accents: spring `#3FA96A`, summer `#E8A11C`, autumn `#D8602F`, winter `#3C8FD1` (applied to the sprout and the caption).
 - Output is a plain string — drop it into HTML / Blade / Twig / email templates; set a width yourself (e.g. `width="200"`).
 - Invalid country codes throw `InvalidArgumentException`, same as every other method.
-- Container users (Laravel / ThinkPHP / Hyperf / webman): `SeasonService::getMascot()` uses the configured default country, falling back to the neutral mascot when none is configured.
+- Container users (Laravel / ThinkPHP / Hyperf / Yii / webman): `SeasonService::getMascot()` uses the configured default country, falling back to the neutral mascot when none is configured.
 
 ## Country codes
 
@@ -317,7 +356,7 @@ composer analyse    # PHPStan (static analysis)
 - PHP >= 8.0
 - **mbstring** extension (flag emoji uses `mb_chr`)
 - No Composer needed — `require src/bootstrap.php` (see "Native PHP" above)
-- Optional: `workerman/webman-framework`, `illuminate/support`, `topthink/framework`, `hyperf/framework`
+- Optional: `workerman/webman-framework`, `illuminate/support`, `topthink/framework`, `hyperf/framework`, `yiisoft/yii2`, `yiisoft/config`
 
 ## 开源不易，欢迎支持 / Support This Project
 

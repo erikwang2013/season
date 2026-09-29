@@ -7,7 +7,7 @@ namespace Erikwang2013\Season;
 use DateTimeInterface;
 
 /**
- * Season service for dependency injection in webman / Laravel / ThinkPHP / Hyperf containers.
+ * Season service for dependency injection in webman / Laravel / ThinkPHP / Hyperf / Yii containers.
  *
  * @method string getSeason(string $countryCode, ?DateTimeInterface $date = null)
  * @method string getSeasonNameZh(string $countryCode, ?DateTimeInterface $date = null)
