@@ -111,20 +111,11 @@
   <ellipse cx="124" cy="92" rx="34" ry="26" fill="url(#g-gloss)" transform="rotate(-24 124 92)"/>
 
   
-  <g fill="#22313A">
-    <circle cx="126" cy="124" r="7"/>
-    <circle cx="174" cy="124" r="7"/>
-  </g>
-  <g fill="#FFFFFF">
-    <circle cx="128.6" cy="121" r="2.4"/>
-    <circle cx="176.6" cy="121" r="2.4"/>
-  </g>
-  <g fill="#FF7A90" opacity=".35">
-    <ellipse cx="108" cy="140" rx="10" ry="6"/>
-    <ellipse cx="192" cy="140" rx="10" ry="6"/>
-  </g>
-  <path d="M139 142 Q150 152 161 142" fill="none" stroke="#22313A" stroke-width="3.4" stroke-linecap="round"/>
+  
+  
+  
+  
 
   
   <text x="150" y="282" text-anchor="middle" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Source Han Sans SC, sans-serif" font-size="19" font-weight="600" fill="#22313A" letter-spacing="0.5">Seasony · 季灵</text>
-  <text x="150" y="304" text-anchor="middle" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Source Han Sans SC, sans-serif" font-size="12" fill="#6B7C86" letter-spacing="0.6">ISO 3166-1 · 南北半球 · 四季</text></g><g class="ex-face"><ellipse cx="150" cy="135" rx="50" ry="40" fill="url(#g-spring)"/><path d="M 119.35,122.6 Q 126,131.7 132.65,122.6" fill="none" stroke="#22313A" stroke-width="1.8" stroke-linecap="round"/><path d="M 139.44,139.4 Q 142.08,132.34 144.72,134.36 Q 147.36,132.34 150,139.4 Q 152.64,146.46 155.28,144.44 Q 157.92,146.46 160.56,139.4" fill="none" stroke="#22313A" stroke-width="1.7" stroke-linecap="round"/><ellipse cx="120.75" cy="133.45" rx="5.46" ry="2.94" fill="#FF7A90" opacity="0.7"/><ellipse cx="179.25" cy="133.45" rx="5.46" ry="2.94" fill="#FF7A90" opacity="0.7"/><g transform="translate(175.05 125.05) rotate(12)"><rect class="ex-anim-palm" x="-6.04" y="-8.45" width="12.07" height="16.1" rx="4.43" fill="#8CC5A0" stroke="#22313A" stroke-width="1.4"/><path class="ex-anim-palm" d="M -2.9,-6.04 L -2.9,-0.8" stroke="#22313A" stroke-width="1" stroke-linecap="round" opacity=".55"/><path class="ex-anim-palm" d="M 0,-6.04 L 0,-0.8" stroke="#22313A" stroke-width="1" stroke-linecap="round" opacity=".55"/><path class="ex-anim-palm" d="M 2.9,-6.04 L 2.9,-0.8" stroke="#22313A" stroke-width="1" stroke-linecap="round" opacity=".55"/></g><g transform="translate(121.42 92.22)"><circle class="ex-anim-steam" style="animation-delay:0.0s" r="2.31" fill="#D7DEE8" opacity=".72"/></g><g transform="translate(123.52 90.75)"><circle class="ex-anim-steam" style="animation-delay:0.28s" r="2.94" fill="#D7DEE8" opacity=".72"/></g><g transform="translate(125.62 92.43)"><circle class="ex-anim-steam" style="animation-delay:0.56s" r="2.1" fill="#D7DEE8" opacity=".72"/></g><g transform="translate(0 0)"><path class="ex-anim-sweat" style="animation-delay:0.2s" d="M 184.15,113.5 C 186.25,116.86 186.25,119.94 184.15,119.94 C 182.05,119.94 182.05,116.86 184.15,113.5 Z" fill="#6FB2F0"/><circle cx="184.15" cy="116.72" r="0.62" fill="#FFFFFF" opacity=".8"/></g></g></g></svg>
+  <text x="150" y="304" text-anchor="middle" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Source Han Sans SC, sans-serif" font-size="12" fill="#6B7C86" letter-spacing="0.6">ISO 3166-1 · 南北半球 · 四季</text></g><g class="ex-face"><path d="M 119.35,122.6 Q 126,131.7 132.65,122.6" fill="none" stroke="#22313A" stroke-width="1.8" stroke-linecap="round"/><path d="M 139.44,139.4 Q 142.08,132.34 144.72,134.36 Q 147.36,132.34 150,139.4 Q 152.64,146.46 155.28,144.44 Q 157.92,146.46 160.56,139.4" fill="none" stroke="#22313A" stroke-width="1.7" stroke-linecap="round"/><ellipse cx="120.75" cy="133.45" rx="5.46" ry="2.94" fill="#FF7A90" opacity="0.7"/><ellipse cx="179.25" cy="133.45" rx="5.46" ry="2.94" fill="#FF7A90" opacity="0.7"/><g transform="translate(175.05 125.05) rotate(12)"><rect class="ex-anim-palm" x="-6.04" y="-8.45" width="12.07" height="16.1" rx="4.43" fill="#8CC5A0" stroke="#22313A" stroke-width="1.4"/><path class="ex-anim-palm" d="M -2.9,-6.04 L -2.9,-0.8" stroke="#22313A" stroke-width="1" stroke-linecap="round" opacity=".55"/><path class="ex-anim-palm" d="M 0,-6.04 L 0,-0.8" stroke="#22313A" stroke-width="1" stroke-linecap="round" opacity=".55"/><path class="ex-anim-palm" d="M 2.9,-6.04 L 2.9,-0.8" stroke="#22313A" stroke-width="1" stroke-linecap="round" opacity=".55"/></g><g transform="translate(121.42 92.22)"><circle class="ex-anim-steam" style="animation-delay:0.0s" r="2.31" fill="#D7DEE8" opacity=".72"/></g><g transform="translate(123.52 90.75)"><circle class="ex-anim-steam" style="animation-delay:0.28s" r="2.94" fill="#D7DEE8" opacity=".72"/></g><g transform="translate(125.62 92.43)"><circle class="ex-anim-steam" style="animation-delay:0.56s" r="2.1" fill="#D7DEE8" opacity=".72"/></g><g transform="translate(0 0)"><path class="ex-anim-sweat" style="animation-delay:0.2s" d="M 184.15,113.5 C 186.25,116.86 186.25,119.94 184.15,119.94 C 182.05,119.94 182.05,116.86 184.15,113.5 Z" fill="#6FB2F0"/><circle cx="184.15" cy="116.72" r="0.62" fill="#FFFFFF" opacity=".8"/></g></g></g></svg>

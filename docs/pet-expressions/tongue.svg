@@ -111,20 +111,11 @@
   <ellipse cx="124" cy="92" rx="34" ry="26" fill="url(#g-gloss)" transform="rotate(-24 124 92)"/>
 
   
-  <g fill="#22313A">
-    <circle cx="126" cy="124" r="7"/>
-    <circle cx="174" cy="124" r="7"/>
-  </g>
-  <g fill="#FFFFFF">
-    <circle cx="128.6" cy="121" r="2.4"/>
-    <circle cx="176.6" cy="121" r="2.4"/>
-  </g>
-  <g fill="#FF7A90" opacity=".35">
-    <ellipse cx="108" cy="140" rx="10" ry="6"/>
-    <ellipse cx="192" cy="140" rx="10" ry="6"/>
-  </g>
-  <path d="M139 142 Q150 152 161 142" fill="none" stroke="#22313A" stroke-width="3.4" stroke-linecap="round"/>
+  
+  
+  
+  
 
   
   <text x="150" y="282" text-anchor="middle" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Source Han Sans SC, sans-serif" font-size="19" font-weight="600" fill="#22313A" letter-spacing="0.5">Seasony · 季灵</text>
-  <text x="150" y="304" text-anchor="middle" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Source Han Sans SC, sans-serif" font-size="12" fill="#6B7C86" letter-spacing="0.6">ISO 3166-1 · 南北半球 · 四季</text></g><g class="ex-face"><ellipse cx="150" cy="135" rx="50" ry="40" fill="url(#g-spring)"/><ellipse cx="126" cy="124" rx="7" ry="7.98" fill="#FFFFFF" stroke="#22313A" stroke-width="1.3"/><ellipse cx="126" cy="124" rx="3.36" ry="4.39" fill="#22313A"/><circle cx="124.46" cy="121.77" r="1.4" fill="#FFFFFF"/><path d="M 167.35,125.96 Q 174,115.95 180.65,125.96" fill="none" stroke="#22313A" stroke-width="1.8" stroke-linecap="round"/><path d="M 139.44,138.14 Q 150,149.98 160.56,138.14 Z" fill="#4A1D2E" stroke="#22313A" stroke-width="1.36"/><path d="M 146.41,142.17 Q 150,151.5 153.59,142.17 Z" fill="#FF5C8A" stroke="#22313A" stroke-width="1"/><path d="M 150,142.93 L 150,147.46" stroke="#22313A" stroke-width="1" opacity=".55"/><ellipse cx="120.75" cy="133.45" rx="5.46" ry="2.94" fill="#FF7A90" opacity="0.55"/><ellipse cx="179.25" cy="133.45" rx="5.46" ry="2.94" fill="#FF7A90" opacity="0.55"/><path class="ex-anim-spark" style="animation-delay:0.2s" d="M 115.58,94.72 L 116.36,96.74 L 118.38,97.52 L 116.36,98.3 L 115.58,100.32 L 114.79,98.3 L 112.78,97.52 L 114.79,96.74 Z" fill="#FF5C8A"/></g></g></svg>
+  <text x="150" y="304" text-anchor="middle" font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Source Han Sans SC, sans-serif" font-size="12" fill="#6B7C86" letter-spacing="0.6">ISO 3166-1 · 南北半球 · 四季</text></g><g class="ex-face"><ellipse cx="126" cy="124" rx="7" ry="7.98" fill="#FFFFFF" stroke="#22313A" stroke-width="1.3"/><ellipse cx="126" cy="124" rx="3.36" ry="4.39" fill="#22313A"/><circle cx="124.46" cy="121.77" r="1.4" fill="#FFFFFF"/><path d="M 167.35,125.96 Q 174,115.95 180.65,125.96" fill="none" stroke="#22313A" stroke-width="1.8" stroke-linecap="round"/><path d="M 139.44,138.14 Q 150,149.98 160.56,138.14 Z" fill="#4A1D2E" stroke="#22313A" stroke-width="1.36"/><path d="M 146.41,142.17 Q 150,151.5 153.59,142.17 Z" fill="#FF5C8A" stroke="#22313A" stroke-width="1"/><path d="M 150,142.93 L 150,147.46" stroke="#22313A" stroke-width="1" opacity=".55"/><ellipse cx="120.75" cy="133.45" rx="5.46" ry="2.94" fill="#FF7A90" opacity="0.55"/><ellipse cx="179.25" cy="133.45" rx="5.46" ry="2.94" fill="#FF7A90" opacity="0.55"/><path class="ex-anim-spark" style="animation-delay:0.2s" d="M 115.58,94.72 L 116.36,96.74 L 118.38,97.52 L 116.36,98.3 L 115.58,100.32 L 114.79,98.3 L 112.78,97.52 L 114.79,96.74 Z" fill="#FF5C8A"/></g></g></svg>
