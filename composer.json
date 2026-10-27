@@ -1,6 +1,7 @@
 {
     "name": "erikwang2013/season",
     "description": "PHP library / extension that resolves the current season from an ISO 3166-1 alpha-2 country code. Use it as a plain Composer package, or integrate with Laravel 7–11, ThinkPHP 6 / 8, Hyperf 2 / 3, webman, Yii 2, and Yii 3. Besides English season keys (spring, etc.) and Chinese names, it provides flag emoji, localized season names by BCP 47 locale, hemisphere detection, and optional date-based calculation.",
+    "homepage": "https://package.erik.xyz/season/",
     "type": "library",
     "license": "MIT",
     "keywords": ["iso 3166-1", "country", "season", "webman", "laravel", "thinkphp", "hyperf", "yii2", "yii3", "yii", "php"],

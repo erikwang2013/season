@@ -1,5 +1,7 @@
 # season
 
+> 官网 / Website: [https://package.erik.xyz/season/](https://package.erik.xyz/season/)
+
 **Language:** [English](README.md) · [简体中文](README.zh-CN.md)
 
 <p align="center"><img src="./docs/mascot.svg" alt="Seasony, the season mascot" width="200" /></p>

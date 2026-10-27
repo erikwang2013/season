@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 580" width="960" height="580" role="img" aria-labelledby="lc-title lc-desc"
+     font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Source Han Sans SC, sans-serif">
+  <title id="lc-title">season call lifecycle: from country code to season output</title>
+  <desc id="lc-desc">Main path: input country code and optional date → normalize trim and case → two-letter validation (throws InvalidArgumentException on failure) → hemisphere lookup (southern table, O(1)) → get month → month-to-season map → output season key. Four consumers follow: Chinese names, localized names (full tag → language → en fallback), flag emoji and season-themed mascot. Extension points sit at the bottom.</desc>
+
+  <defs>
+    <marker id="ar-l" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#8FA8A2"/>
+    </marker>
+    <marker id="ar-err" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#C2705F"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="960" height="580" rx="28" fill="#F7FAF9"/>
+  <text x="40" y="56" font-size="24" font-weight="700" fill="#22313A">Call lifecycle</text>
+  <text x="40" y="82" font-size="13" fill="#6B7C86">Full path of one getSeason() call, all in-memory lookups: no network, database, cache or mutable global state.</text>
+
+  <!-- ── Main path ── -->
+  <text x="40" y="118" font-size="11.5" font-weight="700" fill="#8FA8A2">Main path</text>
+  <g text-anchor="middle">
+    <rect x="42" y="130" width="108" height="84" rx="14" fill="#F4F8FF" stroke="#D8E6F8" stroke-width="1.5"/>
+    <text x="96" y="156" font-size="11.5" font-weight="700" fill="#245B86">Input</text>
+    <text x="96" y="178" font-size="9" fill="#5A7FA0">country_code</text>
+    <text x="96" y="194" font-size="9" fill="#5A7FA0">date? · locale?</text>
+
+    <rect x="170" y="130" width="108" height="84" rx="14" fill="#F4F8FF" stroke="#D8E6F8" stroke-width="1.5"/>
+    <text x="224" y="156" font-size="11.5" font-weight="700" fill="#245B86">Normalize</text>
+    <text x="224" y="178" font-size="9" fill="#5A7FA0">trim + uppercase</text>
+    <text x="224" y="194" font-size="9" fill="#5A7FA0">case-insensitive</text>
+
+    <rect x="298" y="130" width="108" height="84" rx="14" fill="#EEF8F1" stroke="#CBE7D5" stroke-width="1.5"/>
+    <text x="352" y="156" font-size="11.5" font-weight="700" fill="#1F5B39">Validate</text>
+    <text x="352" y="178" font-size="9" fill="#5E8A73">isValidCode()</text>
+    <text x="352" y="194" font-size="9" fill="#5E8A73">two letters A-Z</text>
+
+    <rect x="426" y="130" width="108" height="84" rx="14" fill="#EEF8F1" stroke="#CBE7D5" stroke-width="1.5"/>
+    <text x="480" y="156" font-size="11.5" font-weight="700" fill="#1F5B39">Hemisphere</text>
+    <text x="480" y="178" font-size="9" fill="#5E8A73">getHemisphere()</text>
+    <text x="480" y="194" font-size="9" fill="#5E8A73">lookup · O(1)</text>
+
+    <rect x="554" y="130" width="108" height="84" rx="14" fill="#EEF8F1" stroke="#CBE7D5" stroke-width="1.5"/>
+    <text x="608" y="156" font-size="11.5" font-weight="700" fill="#1F5B39">Get month</text>
+    <text x="608" y="178" font-size="9" fill="#5E8A73">date ?? now</text>
+    <text x="608" y="194" font-size="9" fill="#5E8A73">format('n')</text>
+
+    <rect x="682" y="130" width="108" height="84" rx="14" fill="#EEF8F1" stroke="#CBE7D5" stroke-width="1.5"/>
+    <text x="736" y="156" font-size="11.5" font-weight="700" fill="#1F5B39">Month → season</text>
+    <text x="736" y="178" font-size="9" fill="#5E8A73">north / south tables</text>
+    <text x="736" y="194" font-size="9" fill="#5E8A73">monthToSeason()</text>
+
+    <rect x="810" y="130" width="108" height="84" rx="14" fill="#FFF6EC" stroke="#F2DDC4" stroke-width="1.5"/>
+    <text x="864" y="156" font-size="11.5" font-weight="700" fill="#8A4B14">Output</text>
+    <text x="864" y="178" font-size="9" fill="#946B44">spring … winter</text>
+    <text x="864" y="194" font-size="9" fill="#946B44">season key</text>
+  </g>
+
+  <g stroke="#8FA8A2" stroke-width="1.8" marker-end="url(#ar-l)">
+    <line x1="152" y1="172" x2="166" y2="172"/>
+    <line x1="280" y1="172" x2="294" y2="172"/>
+    <line x1="408" y1="172" x2="422" y2="172"/>
+    <line x1="536" y1="172" x2="550" y2="172"/>
+    <line x1="664" y1="172" x2="678" y2="172"/>
+    <line x1="792" y1="172" x2="806" y2="172"/>
+  </g>
+
+  <!-- ── Error branch ── -->
+  <line x1="352" y1="216" x2="352" y2="250" stroke="#C2705F" stroke-width="1.8" marker-end="url(#ar-err)"/>
+  <text x="360" y="238" font-size="9.5" fill="#C2705F">not two letters / empty</text>
+  <rect x="160" y="254" width="384" height="52" rx="14" fill="#FDECEA" stroke="#F3C9C2" stroke-width="1.5"/>
+  <text x="176" y="276" font-size="11.5" font-weight="700" fill="#A33124">Throw InvalidArgumentException</text>
+  <text x="176" y="294" font-size="9.5" fill="#B4553F">getSeason / getHemisphere / getCountryFlagEmoji / getSeasonNameZh validate first</text>
+
+  <!-- ── Consumers ── -->
+  <text x="852" y="322" font-size="11.5" font-weight="700" fill="#8FA8A2" text-anchor="end">Consumers</text>
+  <g stroke="#8FA8A2" stroke-width="1.8" fill="none" marker-end="url(#ar-l)">
+    <path d="M864 216 L864 330 L142 330 L142 346"/>
+    <path d="M368 330 L368 346"/>
+    <path d="M594 330 L594 346"/>
+    <path d="M820 330 L820 346"/>
+  </g>
+
+  <g text-anchor="middle">
+    <rect x="42" y="350" width="200" height="84" rx="14" fill="#EEF8F1" stroke="#CBE7D5" stroke-width="1.5"/>
+    <text x="142" y="376" font-size="11.5" font-weight="700" fill="#1F5B39">Chinese names</text>
+    <text x="142" y="398" font-size="9.5" fill="#5E8A73">getSeasonNameZh()</text>
+    <text x="142" y="418" font-size="9.5" fill="#5E8A73">春 / 夏 / 秋 / 冬</text>
+
+    <rect x="268" y="350" width="200" height="84" rx="14" fill="#FFF6EC" stroke="#F2DDC4" stroke-width="1.5"/>
+    <text x="368" y="376" font-size="11.5" font-weight="700" fill="#8A4B14">Localized names</text>
+    <text x="368" y="398" font-size="9.5" fill="#946B44">resolveSeasonNamesForLocale()</text>
+    <text x="368" y="418" font-size="9.5" fill="#946B44">full tag → language code → en fallback</text>
+
+    <rect x="494" y="350" width="200" height="84" rx="14" fill="#EEF5FC" stroke="#D3E5F5" stroke-width="1.5"/>
+    <text x="594" y="376" font-size="11.5" font-weight="700" fill="#245B86">Emoji</text>
+    <text x="594" y="398" font-size="9.5" fill="#5A7FA0">getCountryFlagEmoji() → 🇨🇳</text>
+    <text x="594" y="418" font-size="9.5" fill="#5A7FA0">getSeasonEmoji() → ❄️</text>
+
+    <rect x="720" y="350" width="200" height="84" rx="14" fill="#FDF0F5" stroke="#F2D7E3" stroke-width="1.5"/>
+    <text x="820" y="376" font-size="11.5" font-weight="700" fill="#8A2B52">Mascot</text>
+    <text x="820" y="398" font-size="9.5" fill="#9C6280">Mascot::forCountry()</text>
+    <text x="820" y="418" font-size="9.5" fill="#9C6280">season colors + season label SVG</text>
+  </g>
+
+  <!-- ── Extension points ── -->
+  <rect x="40" y="456" width="880" height="80" rx="16" fill="#FFFFFF" stroke="#E1EBE8" stroke-width="1.5"/>
+  <text x="56" y="484" font-size="12.5" font-weight="700" fill="#22313A">Extension points</text>
+  <text x="56" y="506" font-size="10.5" fill="#5A6B75">Season-name resolvers are protected static and overridable without forking. LocaleData: NAMES by language, OVERRIDES by region (en_US: Fall, en: Autumn).</text>
+  <text x="56" y="524" font-size="10.5" fill="#8FA8A2">Add one constant for a new language; add one key/value to SOUTH_HEMISPHERE_CODES for a new southern country or region.</text>
+
+  <text x="40" y="566" font-size="11" fill="#8FA8A2">Fixed path: all 7 main steps are O(1) lookups; a call performs no IO and changes no state, safe for high-frequency request paths.</text>
+</svg>
