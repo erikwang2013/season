@@ -11,7 +11,7 @@
             "email": "erik@erik.xyz"
         }
     ],
-    "version": "2.2.0",
+    "version": "2.2.1",
     "require": {
         "php": ">=8.0",
         "ext-mbstring": "*"
