@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 580" width="960" height="580" role="img" aria-labelledby="lc-title lc-desc"
-     font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Source Han Sans SC, sans-serif">
+     font-family="Noto Sans SC, Source Han Sans SC, Noto Sans CJK SC, sans-serif">
   <title id="lc-title">season 调用生命周期：从国家码到季节输出的完整链路</title>
   <desc id="lc-desc">主线为：输入国家码与可选日期 → 标准化 trim 与大小写 → 两字母格式校验（失败抛 InvalidArgumentException）→ 半球判定（南半球代码表 O(1) 查表）→ 取月份 → 月份到季节映射 → 输出季节键。输出后分四条消费路径：中文名称、多语言名称（完整标签→语言码→en 回退）、国旗 Emoji、季节主题吉祥物。底部为可继承覆写的扩展点。</desc>
 

@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 660" width="960" height="660" role="img" aria-labelledby="arch-title arch-desc"
-     font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Source Han Sans SC, sans-serif">
+     font-family="Noto Sans SC, Source Han Sans SC, Noto Sans CJK SC, sans-serif">
   <title id="arch-title">season architecture: consumers → integrations → service → core → data</title>
   <desc id="arch-desc">Layered architecture diagram. Top: native PHP and Laravel / ThinkPHP / Hyperf / Yii / webman consumers. Integrations: framework service providers, the Yii bootstrap and config files, and the webman installer. Service: SeasonService holds the default country code and proxies the core API. Core: CountrySeason and global helpers.php. Data: southern hemisphere table, month-to-season maps and LocaleData.</desc>
 

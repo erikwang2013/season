@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 660" width="960" height="660" role="img" aria-labelledby="arch-title arch-desc"
-     font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Source Han Sans SC, sans-serif">
+     font-family="Noto Sans SC, Source Han Sans SC, Noto Sans CJK SC, sans-serif">
   <title id="arch-title">season 架构设计：使用方 → 集成层 → 服务层 → 核心层 → 数据层</title>
   <desc id="arch-desc">分层架构图。上图：原生 PHP 与 Laravel / ThinkPHP / Hyperf / Yii / webman 各类使用方；集成层由各框架的服务提供者、Yii 的引导类与配置文件、webman 安装器组成；服务层 SeasonService 持有默认国家码并代理核心 API；核心层 CountrySeason 与全局函数 helpers.php；数据层为南半球代码表、月份到季节映射与 LocaleData 多语言数据。</desc>
 

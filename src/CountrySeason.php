@@ -129,7 +129,7 @@ class CountrySeason
      */
     public static function isValidCode(string $countryCode): bool
     {
-        return \strlen($countryCode) === 2 && \ctype_alpha($countryCode);
+        return \preg_match('/^[A-Za-z]{2}\z/', $countryCode) === 1;
     }
 
     /**

@@ -25,7 +25,13 @@ if (\PHP_VERSION_ID < 80000) {
         return;
     }
 
-    $file = __DIR__ . '/' . \str_replace('\\', '/', \substr($class, \strlen($prefix))) . '.php';
+    // Reject ".", "..", "/" and any non PSR-4 character so a crafted class name cannot escape src/.
+    $relative = \substr($class, \strlen($prefix));
+    if ($relative === '' || \preg_match('/[^A-Za-z0-9_\\\\]/', $relative) === 1) {
+        return;
+    }
+
+    $file = __DIR__ . '/' . \str_replace('\\', '/', $relative) . '.php';
     if (\is_file($file)) {
         require $file;
     }

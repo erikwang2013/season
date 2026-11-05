@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 620" width="960" height="620" role="img" aria-labelledby="fn-title fn-desc"
-     font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Source Han Sans SC, sans-serif">
+     font-family="Noto Sans SC, Source Han Sans SC, Noto Sans CJK SC, sans-serif">
   <title id="fn-title">season 功能设计：输入、核心与八类能力</title>
   <desc id="fn-desc">功能地图。左侧为输入（国家码、可选日期、可选 locale、配置默认国家码），中间为 CountrySeason 与 SeasonService 核心，右侧八张能力卡片分别是季节解析、中文名称、国旗表情符号、多语言名称、半球判断、代码校验、默认国家与季节性吉祥物，底部为各框架的集成能力。</desc>
 

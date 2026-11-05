@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 580" width="960" height="580" role="img" aria-labelledby="lc-title lc-desc"
-     font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Source Han Sans SC, sans-serif">
+     font-family="Noto Sans SC, Source Han Sans SC, Noto Sans CJK SC, sans-serif">
   <title id="lc-title">season call lifecycle: from country code to season output</title>
   <desc id="lc-desc">Main path: input country code and optional date → normalize trim and case → two-letter validation (throws InvalidArgumentException on failure) → hemisphere lookup (southern table, O(1)) → get month → month-to-season map → output season key. Four consumers follow: Chinese names, localized names (full tag → language → en fallback), flag emoji and season-themed mascot. Extension points sit at the bottom.</desc>
 

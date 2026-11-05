@@ -67,6 +67,17 @@ class BootstrapTest extends TestCase
         $this->assertSame('spring', $output, 'repeated require must not warn or redeclare');
     }
 
+    public function testAutoloaderRejectsPathTraversalClassNames(): void
+    {
+        $output = $this->runInFreshProcess(
+            $this->requireBootstrap()
+            . '\class_exists("Erikwang2013\\\\Season\\\\..\\\\tests\\\\Stubs\\\\webman-functions");'
+            . 'echo \function_exists("base_path") ? "included" : "blocked";'
+        );
+
+        $this->assertSame('blocked', $output, 'a class name must not be able to include files outside src/');
+    }
+
     public function testVersionGuardRunsBeforeTheAutoloader(): void
     {
         $bootstrap = (string) \file_get_contents($this->bootstrapPath());

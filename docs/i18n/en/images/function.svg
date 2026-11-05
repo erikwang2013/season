@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 620" width="960" height="620" role="img" aria-labelledby="fn-title fn-desc"
-     font-family="PingFang SC, Hiragino Sans GB, Microsoft YaHei, Source Han Sans SC, sans-serif">
+     font-family="Noto Sans SC, Source Han Sans SC, Noto Sans CJK SC, sans-serif">
   <title id="fn-title">season feature map: input, core and eight capabilities</title>
   <desc id="fn-desc">Feature map. Inputs on the left (country code, optional date, optional locale, configured default country), CountrySeason and SeasonService in the center, and eight capability cards on the right: season lookup, Chinese names, flag emoji, localized names, hemisphere, code validation, default country and season-themed mascot. Framework integrations sit at the bottom.</desc>
 
